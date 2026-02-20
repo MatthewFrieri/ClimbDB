@@ -13,7 +13,7 @@ class Climb(SQLModel, table=True):
     media_url: str = Field()
     is_video: bool = Field(index=True)
     grade: Grade = Field(index=True)
-    gradeOpinion: GradeOpinion = Field(index=True)
+    grade_opinion: GradeOpinion = Field(index=True)
     color: Optional[Color] = Field(index=True)
     styles: List[Style] = Field(sa_column=Column(JSON))
     flash: bool = Field(index=True)
