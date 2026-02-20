@@ -1,4 +1,4 @@
-from typing import Annotated, List
+from typing import Annotated, List, Optional
 from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, SQLModel, create_engine, select
@@ -43,7 +43,7 @@ async def add_climb(
     media: UploadFile = File(...),
     grade: Grade = Form(...),
     grade_opinion: GradeOpinion = Form(...),
-    color: Color = Form(...),
+    color: Optional[Color] = Form(None),
     styles: List[Style] = Form(...),
     flash: bool = Form(...),
     outdoor: bool = Form(...),

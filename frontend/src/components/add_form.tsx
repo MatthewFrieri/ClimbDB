@@ -27,7 +27,7 @@ export default function AddForm() {
 		formData.append("media", media!);
 		formData.append("grade", grade!.toString());
 		formData.append("grade_opinion", gradeOpinion!.toString());
-		formData.append("color", color!.toString());
+		formData.append("color", color ? color.toString() : "");
 		styles.forEach((style) => {
 			formData.append("styles", style.toString());
 		});
@@ -68,7 +68,6 @@ export default function AddForm() {
 			</Select>
 			<Select
 				label="Color"
-				isRequired
 				selectedKeys={color ? new Set([color]) : new Set()}
 				onSelectionChange={(keys) => {
 					setColor([...keys][0] as Color);
