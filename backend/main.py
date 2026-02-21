@@ -1,6 +1,7 @@
 from typing import Annotated, List, Optional
 from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, SQLModel, create_engine, select
 import shutil
 from pathlib import Path
@@ -30,6 +31,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
 
 @app.on_event("startup")
 def on_startup():
@@ -44,13 +49,11 @@ async def add_climb(
     grade: Grade = Form(...),
     grade_opinion: GradeOpinion = Form(...),
     color: Optional[Color] = Form(None),
-    styles: List[Style] = Form(...),
+    styles: List[Style] = Form([]),
     flash: bool = Form(...),
     outdoor: bool = Form(...),
     favorite: bool = Form(...),
 ):
-    save_dir = Path("C:/Users/matfr/Downloads/climbs")
-    save_dir.mkdir(exist_ok=True)
 
     is_video = media.content_type.startswith("video/")
     is_image = media.content_type.startswith("image/")
@@ -58,7 +61,7 @@ async def add_climb(
         raise HTTPException(status_code=400, detail="Only images or videos are allowed")
 
     extension = Path(media.filename).suffix
-    file_path = save_dir / f"{uuid4()}{extension}"
+    file_path = UPLOAD_DIR / f"{uuid4()}{extension}"
 
     # Save file
     with file_path.open("wb") as buffer:
@@ -84,7 +87,7 @@ async def add_climb(
     return climb
 
 
-@app.get("/all")
-def all(session: SessionDep):
+@app.get("/all_climbs")
+def all_climbs(session: SessionDep):
     climbs = session.exec(select(Climb)).all()
     return climbs

@@ -9,4 +9,7 @@ export class Api {
 	static async add_climb(formData: FormData): Promise<AxiosResponse> {
 		return this.api.post("/add_climb", formData);
 	}
+	static async get_all_climbs(): Promise<AxiosResponse> {
+		return this.api.get("/all_climbs");
+	}
 }
