@@ -23,7 +23,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 				className={`z-10 
 					absolute top-2 right-2
 					transition-opacity duration-150
-					${climb.favorite ? "opacity-100 fill-amber-400" : "opacity-0 fill-transparent group-hover:opacity-100"}
+					${climb.favorite ? "opacity-100 fill-amber-400" : "opacity-0 fill-gray-300 group-hover:opacity-100"}
 				`}
 			/>
 		</div>
