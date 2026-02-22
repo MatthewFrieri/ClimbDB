@@ -5,10 +5,16 @@ import GalleryItem from "@/components/gallery_item";
 import { Select, SelectItem } from "@heroui/select";
 import { Grade } from "@/types";
 import Filters, { Filter } from "@/components/filters";
+import { Button } from "@heroui/button";
+import { PlusIcon } from "@/components/icons";
+import AddItemModal from "@/components/add_item_modal";
+import { useDisclosure } from "@heroui/modal";
 
 type SortField = "date_new_to_old" | "date_old_to_new" | "grade_high_to_low" | "grade_low_to_high";
 
 export default function GalleryPage() {
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
 	const [climbs, setClimbs] = useState<Climb[]>([]);
 	const [sortField, setSortField] = useState<SortField>("date_new_to_old");
 	const [filters, setFilters] = useState<Filter>({
@@ -53,7 +59,7 @@ export default function GalleryPage() {
 	const sortedClimbs = [...climbs].sort(sortClimbs);
 
 	return (
-		<div className="">
+		<>
 			<header className="flex justify-between items-center p-4 w-full">
 				<h1 className="font-bold text-5xl">Gallery</h1>
 				<span className="flex items-center gap-3">
@@ -76,7 +82,6 @@ export default function GalleryPage() {
 					</Select>
 				</span>
 			</header>
-
 			{sortedClimbs.length == 0 ? (
 				<div className="flex justify-center items-center h-[80vh]">
 					<h1 className="text-gray-500 text-4xl">Nothing matches filters :(</h1>
@@ -88,6 +93,18 @@ export default function GalleryPage() {
 					))}
 				</div>
 			)}
-		</div>
+
+			<Button
+				onPress={onOpenChange}
+				isIconOnly
+				radius="full"
+				color="primary"
+				data-hover={false}
+				className="right-6 bottom-6 z-10 fixed hover:bg-blue-400 w-16 h-16"
+			>
+				<PlusIcon size={36} />
+			</Button>
+			<AddItemModal isOpen={isOpen} onOpenChange={onOpenChange} />
+		</>
 	);
 }

@@ -18,6 +18,13 @@ export const formatDate = (dateStr: string) => {
 	});
 };
 
+export function formatFileSize(bytes: number) {
+	if (bytes < 1024) return `${bytes} B`;
+	if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(0)} KB`;
+	if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(0)} MB`;
+	return `${(bytes / 1024 ** 3).toFixed(0)} GB`;
+}
+
 export const colorMapping: Record<Color, string> = {
 	[Color.red]: "fill-[#db0202]",
 	[Color.orange]: "fill-[#eb6405]",
@@ -28,5 +35,5 @@ export const colorMapping: Record<Color, string> = {
 	[Color.purple]: "fill-[#4c13a1]",
 	[Color.pink]: "fill-[#f774e8]",
 	[Color.black]: "fill-[#242424]",
-	[Color.white]: "fill-[#cccccc]",
+	[Color.white]: "fill-[#eeeeee]",
 };

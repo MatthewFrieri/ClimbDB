@@ -68,3 +68,11 @@ export function CircleIcon({ size = 24, className }: IconProps) {
 		</svg>
 	);
 }
+
+export function PlusIcon({ size = 24, className }: IconProps) {
+	return (
+		<svg width={size} height={size} viewBox="0 0 24 24" className={className}>
+			<path d="M6 12H18M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+		</svg>
+	);
+}

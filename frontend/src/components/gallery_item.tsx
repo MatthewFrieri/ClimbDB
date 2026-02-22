@@ -46,7 +46,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 					) : (
 						<Image src={mediaUrl} removeWrapper className="rounded-none max-w-full max-h-full object-contain" />
 					)}
-					<div className="top-2 left-2 z-10 absolute flex flex-col gap-5 text-white">
+					<div className="top-4 left-4 z-10 absolute flex flex-col gap-5 text-white">
 						<p>{formatDate(climb.date)}</p>
 						<div className="flex flex-col gap-1">
 							<p>
