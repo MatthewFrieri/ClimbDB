@@ -4,18 +4,30 @@ import { Api } from "@/api";
 import GalleryItem from "@/components/gallery_item";
 import { Select, SelectItem } from "@heroui/select";
 import { Grade } from "@/types";
+import Filters, { Filter } from "@/components/filters";
 
 type SortField = "date_new_to_old" | "date_old_to_new" | "grade_high_to_low" | "grade_low_to_high";
 
 export default function GalleryPage() {
 	const [climbs, setClimbs] = useState<Climb[]>([]);
 	const [sortField, setSortField] = useState<SortField>("date_new_to_old");
+	const [filters, setFilters] = useState<Filter>({
+		video: undefined,
+		complete: undefined,
+		flash: undefined,
+		outdoor: undefined,
+		favorite: undefined,
+		grade: undefined,
+		grade_opinion: undefined,
+		color: undefined,
+		style: undefined,
+	});
 
 	useEffect(() => {
-		Api.get_all_climbs().then((response) => {
+		Api.get_filtered_climbs(filters).then((response) => {
 			setClimbs(response.data);
 		});
-	}, []);
+	}, [filters]);
 
 	const sortClimbs = (a: Climb, b: Climb) => {
 		const field = sortField.split("_")[0] as "date" | "grade";
@@ -41,37 +53,41 @@ export default function GalleryPage() {
 	const sortedClimbs = [...climbs].sort(sortClimbs);
 
 	return (
-		<div className="bg-black">
-			<header className="z-10 fixed flex justify-between items-center p-4 w-full h-20">
-				<h1 className="font-semibold text-white text-5xl">Gallery</h1>
+		<div className="">
+			<header className="flex justify-between items-center p-4 w-full">
+				<h1 className="font-bold text-5xl">Gallery</h1>
 				<span className="flex items-center gap-3">
-					<p className="text-white">Sort By</p>
-					<div className="flex items-center">
-						<Select
-							aria-label="sort by"
-							className="w-36"
-							labelPlacement="outside-left"
-							selectedKeys={new Set([sortField])}
-							onSelectionChange={(keys) => {
-								const key = Array.from(keys)[0] as SortField;
-								if (!key) return;
-								setSortField(key);
-							}}
-						>
-							<SelectItem key="date_new_to_old">Date (new)</SelectItem>
-							<SelectItem key="date_old_to_new">Date (old)</SelectItem>
-							<SelectItem key="grade_high_to_low">Grade (high)</SelectItem>
-							<SelectItem key="grade_low_to_high">Grade (low)</SelectItem>
-						</Select>
-					</div>
+					<Filters setFilters={setFilters} />
+					<Select
+						label="Sort By"
+						className="w-36"
+						color="primary"
+						selectedKeys={new Set([sortField])}
+						onSelectionChange={(keys) => {
+							const key = Array.from(keys)[0] as SortField;
+							if (!key) return;
+							setSortField(key);
+						}}
+					>
+						<SelectItem key="date_new_to_old">Date (new)</SelectItem>
+						<SelectItem key="date_old_to_new">Date (old)</SelectItem>
+						<SelectItem key="grade_high_to_low">Grade (high)</SelectItem>
+						<SelectItem key="grade_low_to_high">Grade (low)</SelectItem>
+					</Select>
 				</span>
 			</header>
 
-			<div className="gap-2 grid grid-cols-6 px-2 pt-24 pb-2">
-				{sortedClimbs.map((climb) => (
-					<GalleryItem climb={climb} key={climb.id} />
-				))}
-			</div>
+			{sortedClimbs.length == 0 ? (
+				<div className="flex justify-center items-center h-[80vh]">
+					<h1 className="text-gray-500 text-4xl">Nothing matches filters :(</h1>
+				</div>
+			) : (
+				<div className="gap-2 grid grid-cols-6 px-2 pb-2">
+					{sortedClimbs.map((climb) => (
+						<GalleryItem climb={climb} key={climb.id} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

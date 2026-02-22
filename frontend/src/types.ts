@@ -173,10 +173,12 @@ export enum Color {
 	orange = "orange",
 	yellow = "yellow",
 	green = "green",
+	teal = "teal",
 	blue = "blue",
 	purple = "purple",
 	pink = "pink",
 	black = "black",
+	white = "white",
 }
 export enum Grade {
 	V_ = "V?",

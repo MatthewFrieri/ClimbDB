@@ -15,6 +15,7 @@ export default function AddForm() {
 	const [gradeOpinion, setGradeOpinion] = useState<GradeOpinion>(GradeOpinion.normal);
 	const [color, setColor] = useState<Color | undefined>();
 	const [styles, setStyles] = useState<Style[]>([]);
+	const [complete, setComplete] = useState<boolean>(true);
 	const [flash, setFlash] = useState<boolean>(false);
 	const [outdoor, setOutdoor] = useState<boolean>(false);
 	const [favorite, setFavorite] = useState<boolean>(false);
@@ -31,6 +32,7 @@ export default function AddForm() {
 		styles.forEach((style) => {
 			formData.append("styles", style.toString());
 		});
+		formData.append("complete", complete.toString());
 		formData.append("flash", flash.toString());
 		formData.append("outdoor", outdoor.toString());
 		formData.append("favorite", favorite.toString());
@@ -87,6 +89,9 @@ export default function AddForm() {
 					<SelectItem key={style}>{style}</SelectItem>
 				))}
 			</Select>
+			<Checkbox isSelected={complete} onValueChange={setComplete}>
+				Complete
+			</Checkbox>
 			<Checkbox isSelected={flash} onValueChange={setFlash}>
 				Flash
 			</Checkbox>

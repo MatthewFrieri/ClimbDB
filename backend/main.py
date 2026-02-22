@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-from .models import Climb
+from .models import Climb, Filter
 from .const import Grade, GradeOpinion, Style, Color
 
 DATABASE_URL = "sqlite:///database.db"
@@ -50,6 +50,7 @@ async def add_climb(
     grade_opinion: GradeOpinion = Form(...),
     color: Optional[Color] = Form(None),
     styles: List[Style] = Form([]),
+    complete: bool = Form(...),
     flash: bool = Form(...),
     outdoor: bool = Form(...),
     favorite: bool = Form(...),
@@ -76,6 +77,7 @@ async def add_climb(
             "grade_opinion": grade_opinion,
             "color": color,
             "styles": styles,
+            "complete": complete,
             "flash": flash,
             "outdoor": outdoor,
             "favorite": favorite,
@@ -91,3 +93,28 @@ async def add_climb(
 def all_climbs(session: SessionDep):
     climbs = session.exec(select(Climb)).all()
     return climbs
+
+
+@app.post("/filtered_climbs")
+def filtered_climbs(session: SessionDep, filter: Filter):
+    query = select(Climb)
+
+    mapping = {
+        Climb.is_video: filter.video,
+        Climb.complete: filter.complete,
+        Climb.flash: filter.flash,
+        Climb.outdoor: filter.outdoor,
+        Climb.favorite: filter.favorite,
+        Climb.grade: filter.grade,
+        Climb.grade_opinion: filter.grade_opinion,
+        Climb.color: filter.color,
+    }
+
+    for column, value in mapping.items():
+        if value is not None:
+            query = query.where(column == value)
+
+    if filter.style is not None:
+        query = query.where(Climb.styles.contains(filter.style))
+
+    return session.exec(query).all()
