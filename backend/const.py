@@ -34,14 +34,6 @@ class Color(str, Enum):
     PINK = "pink"
     BLACK = "black"
     WHITE = "white"
-    # RED = "#db0202"
-    # ORANGE = "#eb6405"
-    # YELLOW = "#f5d400"
-    # GREEN = "#178000"
-    # BLUE = "#338ad6"
-    # PURPLE = "#4c13a1"
-    # PINK = "#f774e8"
-    # BLACK = "#242424"
 
 
 class Style(str, Enum):

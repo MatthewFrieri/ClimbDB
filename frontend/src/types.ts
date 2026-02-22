@@ -56,10 +56,12 @@ export interface components {
 			/** Is Video */
 			is_video: boolean;
 			grade: components["schemas"]["Grade"];
-			gradeOpinion: components["schemas"]["GradeOpinion"];
+			grade_opinion: components["schemas"]["GradeOpinion"];
 			color: components["schemas"]["Color"] | null;
 			/** Styles */
 			styles: components["schemas"]["Style"][];
+			/** Complete */
+			complete: boolean;
 			/** Flash */
 			flash: boolean;
 			/** Outdoor */

@@ -19,14 +19,52 @@ export function StarIcon({ size = 24, className }: IconProps) {
 
 export function FlashIcon({ size = 24, className }: IconProps) {
 	return (
-		<svg width={size} height={size} viewBox="0 0 24 24" className={className}>
+		<svg width={24} height={size} viewBox="0 0 24 24" className={className}>
 			<path
 				d="M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z"
 				stroke="black"
+				fill="yellow"
 				strokeWidth="1.5"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			></path>
+		</svg>
+	);
+}
+
+export function CheckIcon({ className }: IconProps) {
+	return (
+		<svg width={24} height={20} viewBox="0 0 24 24" fill="none" className={className}>
+			<path
+				d="M4 12.6111L8.92308 17.5L20 6.5"
+				stroke="green"
+				strokeWidth="4"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			></path>
+		</svg>
+	);
+}
+
+export function CrossIcon({ size = 24, className }: IconProps) {
+	return (
+		<svg width={size} height={size} viewBox="0 0 24 24" className={className}>
+			<path
+				d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"
+				fill="red"
+				stroke="red"
+				strokeWidth="1.75"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			></path>
+		</svg>
+	);
+}
+
+export function CircleIcon({ size = 24, className }: IconProps) {
+	return (
+		<svg width={size} height={size} viewBox="0 0 16 16" className={className}>
+			<circle cx="8" cy="8" r="8"></circle>
 		</svg>
 	);
 }
