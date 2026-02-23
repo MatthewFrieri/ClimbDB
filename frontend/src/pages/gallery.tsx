@@ -64,6 +64,9 @@ export default function GalleryPage() {
 			<header className="flex justify-between items-center p-4 w-full">
 				<h1 className="font-bold text-5xl">Gallery</h1>
 				<span className="flex items-center gap-3">
+					<p className="font-semibold">
+						{climbs.length} {climbs.length == 1 ? "Result" : "Results"}
+					</p>
 					<Filters setFilters={setFilters} />
 					<Select
 						label="Sort By"

@@ -26,11 +26,12 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 				<span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
 					<span className="flex flex-row gap-2">
 						<div className="bg-white px-2 py-0.5 rounded-xl outline-2 font-semibold">{climb.grade}</div>
-						<FlashIcon />
+						{climb.flash && <FlashIcon />}
+						{!climb.complete && <CrossIcon />}
 					</span>
 					<StarIcon
 						className={`transition-opacity duration-150
-                        ${climb.favorite ? "opacity-100 fill-red-600" : "opacity-0 fill-gray-300 group-hover:opacity-100"}
+                        ${climb.favorite ? "opacity-100 fill-amber-400" : "opacity-0 fill-gray-300 group-hover:opacity-100"}
                     `}
 					/>
 				</span>
