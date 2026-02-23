@@ -14,7 +14,10 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 
 	return (
 		<>
-			<div onClick={onOpenChange} className="group relative aspect-square hover:cursor-pointer">
+			<div
+				onClick={onOpenChange}
+				className="group relative hover:brightness-90 aspect-square transition-all hover:cursor-pointer"
+			>
 				{climb.is_video ? (
 					<video src={mediaUrl} className="w-full h-full object-cover" autoPlay loop muted preload="metadata" />
 				) : (
@@ -22,7 +25,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 				)}
 				<span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
 					<span className="flex flex-row gap-2">
-						<div className="bg-white px-2 py-0.5 rounded-xl outline-3 font-semibold">{climb.grade}</div>
+						<div className="bg-white px-2 py-0.5 rounded-xl outline-2 font-semibold">{climb.grade}</div>
 						<FlashIcon />
 					</span>
 					<StarIcon

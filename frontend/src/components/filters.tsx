@@ -3,6 +3,8 @@ import { Select, SelectItem } from "@heroui/select";
 import { useEffect, useState } from "react";
 import { Button } from "@heroui/button";
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@heroui/modal";
+import { capitalize, colorMapping } from "@/const";
+import { CircleIcon } from "./icons";
 
 type BoolFilter = 1 | 0 | undefined;
 export type Filter = {
@@ -90,22 +92,55 @@ export default function Filters({ setFilters }: FiltersProps) {
 								<SelectItem key={0}>{obj.falseOption}</SelectItem>
 							</Select>
 						))}
-						{listObjects.map((obj) => (
-							<Select
-								key={obj.label}
-								label={obj.label}
-								placeholder="All"
-								isClearable
-								selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
-								onSelectionChange={(keys) => {
-									obj.setVar([...keys][0] as any);
-								}}
-							>
-								{Object.values(obj.type).map((val) => (
-									<SelectItem key={val}>{val}</SelectItem>
-								))}
-							</Select>
-						))}
+						{listObjects.map((obj) =>
+							obj.type == Color ? (
+								<Select
+									key={obj.label}
+									label={obj.label}
+									placeholder="All"
+									isClearable
+									selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+									onSelectionChange={(keys) => {
+										obj.setVar([...keys][0] as any);
+									}}
+									renderValue={(items) =>
+										items.map((item) => {
+											const value = item.key as Color;
+											return (
+												<div key={item.key} className="flex items-center gap-2">
+													<CircleIcon size={16} className={colorMapping[value]} />
+													<span>{capitalize(value)}</span>
+												</div>
+											);
+										})
+									}
+								>
+									{Object.values(Color).map((c: Color) => (
+										<SelectItem key={c} textValue={capitalize(c)}>
+											<div className="flex items-center gap-2">
+												<CircleIcon size={20} className={colorMapping[c]} />
+												<span>{capitalize(c)}</span>
+											</div>
+										</SelectItem>
+									))}
+								</Select>
+							) : (
+								<Select
+									key={obj.label}
+									label={obj.label}
+									placeholder="All"
+									isClearable
+									selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+									onSelectionChange={(keys) => {
+										obj.setVar([...keys][0] as any);
+									}}
+								>
+									{Object.values(obj.type).map((val) => (
+										<SelectItem key={val}>{capitalize(val)}</SelectItem>
+									))}
+								</Select>
+							),
+						)}
 						<span className="flex gap-3">
 							<Button color="success" onPress={onOpenChange} className="w-full h-full">
 								Done

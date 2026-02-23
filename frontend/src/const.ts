@@ -4,9 +4,12 @@ type Schemas = components["schemas"];
 
 export type Climb = Schemas["Climb"];
 
-export function capitalize(str: string) {
+export function capitalize(str: string): string {
 	if (!str) return "";
-	return str.charAt(0).toUpperCase() + str.slice(1);
+	return str
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
 }
 
 export const formatDate = (dateStr: string) => {
@@ -20,9 +23,9 @@ export const formatDate = (dateStr: string) => {
 
 export function formatFileSize(bytes: number) {
 	if (bytes < 1024) return `${bytes} B`;
-	if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(0)} KB`;
-	if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(0)} MB`;
-	return `${(bytes / 1024 ** 3).toFixed(0)} GB`;
+	if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(2)} KB`;
+	if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(2)} MB`;
+	return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
 }
 
 export const colorMapping: Record<Color, string> = {

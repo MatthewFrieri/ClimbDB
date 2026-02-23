@@ -85,6 +85,7 @@ export default function AddItemModal({ isOpen, onOpenChange }: AddItemModalProps
 					<Form onSubmit={handleSubmit} className="flex flex-col gap-4 pb-4">
 						<DatePicker
 							isDisabled={isSubmitting}
+							isRequired
 							label="Date"
 							maxValue={today(getLocalTimeZone())}
 							value={date}
@@ -174,6 +175,7 @@ export default function AddItemModal({ isOpen, onOpenChange }: AddItemModalProps
 
 						<Select
 							isDisabled={isSubmitting}
+							isRequired
 							label="Styles"
 							selectionMode="multiple"
 							selectedKeys={new Set(styles)}
@@ -197,7 +199,13 @@ export default function AddItemModal({ isOpen, onOpenChange }: AddItemModalProps
 							<Checkbox isDisabled={isSubmitting} isSelected={favorite} onValueChange={setFavorite}>
 								Favorite
 							</Checkbox>
-							<Button type="submit" color="success" className="row-span-2 h-full" isLoading={isSubmitting}>
+							<Button
+								type="submit"
+								color="success"
+								className="row-span-2 h-full"
+								isLoading={isSubmitting}
+								isDisabled={!date || !media || !grade || !gradeOpinion || styles.length == 0}
+							>
 								{isSubmitting ? "Submitting..." : "Submit"}
 							</Button>
 						</div>
