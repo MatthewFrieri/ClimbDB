@@ -13,7 +13,7 @@ import { useDisclosure } from "@heroui/modal";
 type SortField = "date_new_to_old" | "date_old_to_new" | "grade_high_to_low" | "grade_low_to_high";
 
 export default function GalleryPage() {
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const { isOpen, onOpenChange } = useDisclosure();
 
 	const [climbs, setClimbs] = useState<Climb[]>([]);
 	const [sortField, setSortField] = useState<SortField>("date_new_to_old");

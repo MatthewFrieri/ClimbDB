@@ -9,7 +9,7 @@ type GalleryItemProps = {
 };
 
 export default function GalleryItem({ climb }: GalleryItemProps) {
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const { isOpen, onOpenChange } = useDisclosure();
 	const mediaUrl = `http://localhost:8000/${climb.media_url}`;
 
 	return (
@@ -47,7 +47,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 							preload="metadata"
 						/>
 					) : (
-						<Image src={mediaUrl} removeWrapper className="rounded-none max-w-full max-h-full object-contain" />
+						<Image src={mediaUrl} removeWrapper className="rounded-none w-full h-full object-contain" />
 					)}
 					<div className="top-4 left-4 z-10 absolute flex flex-col gap-5 text-white">
 						<p>{formatDate(climb.date)}</p>
