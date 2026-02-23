@@ -1,7 +1,8 @@
 import { Color, type components } from "@/types";
 
-type Schemas = components["schemas"];
+export const BACKEND_URL = "http://localhost:8000";
 
+type Schemas = components["schemas"];
 export type Climb = Schemas["Climb"];
 
 export function capitalize(str: string): string {

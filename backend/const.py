@@ -1,5 +1,8 @@
 from enum import Enum
 
+FRONTEND_URL = "http://localhost:5173"
+DATABASE_URL = "sqlite:///data/database.db"
+
 
 class Grade(str, Enum):
     UNKNOWN = "V?"

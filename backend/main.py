@@ -8,9 +8,8 @@ from pathlib import Path
 from uuid import uuid4
 
 from .models import Climb, Filter
-from .const import Grade, GradeOpinion, Style, Color
+from .const import DATABASE_URL, FRONTEND_URL, Grade, GradeOpinion, Style, Color
 
-DATABASE_URL = "sqlite:///database.db"
 engine = create_engine(DATABASE_URL, echo=True)
 
 
@@ -22,7 +21,7 @@ def get_session():
 SessionDep = Annotated[Session, Depends(get_session)]
 app = FastAPI()
 
-origins = ["http://localhost:5173"]
+origins = [FRONTEND_URL]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -31,9 +30,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+app.mount("/data/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 
 @app.on_event("startup")

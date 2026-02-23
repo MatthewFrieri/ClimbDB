@@ -17,6 +17,7 @@ export default function GalleryPage() {
 
 	const [climbs, setClimbs] = useState<Climb[]>([]);
 	const [sortField, setSortField] = useState<SortField>("date_new_to_old");
+	const [refresh, setRefresh] = useState<boolean>(true);
 	const [filters, setFilters] = useState<Filter>({
 		video: undefined,
 		complete: undefined,
@@ -33,7 +34,7 @@ export default function GalleryPage() {
 		Api.get_filtered_climbs(filters).then((response) => {
 			setClimbs(response.data);
 		});
-	}, [filters]);
+	}, [filters, refresh]);
 
 	const sortClimbs = (a: Climb, b: Climb) => {
 		const field = sortField.split("_")[0] as "date" | "grade";
@@ -104,7 +105,7 @@ export default function GalleryPage() {
 			>
 				<PlusIcon size={36} />
 			</Button>
-			<AddItemModal isOpen={isOpen} onOpenChange={onOpenChange} />
+			<AddItemModal isOpen={isOpen} onOpenChange={onOpenChange} setRefresh={setRefresh} />
 		</>
 	);
 }

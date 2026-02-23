@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { Filter } from "./components/filters";
+import { BACKEND_URL } from "./const";
 
 export class Api {
 	private static api = axios.create({
-		baseURL: "http://localhost:8000",
+		baseURL: BACKEND_URL,
 		withCredentials: true,
 	});
 

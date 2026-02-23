@@ -1,4 +1,4 @@
-import { capitalize, Climb, colorMapping, formatDate } from "@/const";
+import { BACKEND_URL, capitalize, Climb, colorMapping, formatDate } from "@/const";
 import { Image } from "@heroui/image";
 import { CheckIcon, CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
@@ -10,7 +10,7 @@ type GalleryItemProps = {
 
 export default function GalleryItem({ climb }: GalleryItemProps) {
 	const { isOpen, onOpenChange } = useDisclosure();
-	const mediaUrl = `http://localhost:8000/${climb.media_url}`;
+	const mediaUrl = `${BACKEND_URL}/${climb.media_url}`;
 
 	return (
 		<>
@@ -40,14 +40,14 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 					{climb.is_video ? (
 						<video
 							src={mediaUrl}
-							className="max-w-full max-h-full object-contain"
+							className="-z-10 w-full h-full object-contain"
 							autoPlay
 							loop
 							controls
 							preload="metadata"
 						/>
 					) : (
-						<Image src={mediaUrl} removeWrapper className="rounded-none w-full h-full object-contain" />
+						<Image src={mediaUrl} removeWrapper className="-z-10 rounded-none w-full h-full object-contain" />
 					)}
 					<div className="top-4 left-4 z-10 absolute flex flex-col gap-5 text-white">
 						<p>{formatDate(climb.date)}</p>

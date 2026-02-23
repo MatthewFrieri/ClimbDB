@@ -14,9 +14,10 @@ import { CircleIcon } from "./icons";
 type AddItemModalProps = {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
+	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function AddItemModal({ isOpen, onOpenChange }: AddItemModalProps) {
+export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddItemModalProps) {
 	const [date, setDate] = useState<DateValue | null>(today(getLocalTimeZone()));
 	const [media, setMedia] = useState<File | undefined>();
 	const [grade, setGrade] = useState<Grade | undefined>();
@@ -60,10 +61,9 @@ export default function AddItemModal({ isOpen, onOpenChange }: AddItemModalProps
 			formData.append("flash", flash.toString());
 			formData.append("outdoor", outdoor.toString());
 			formData.append("favorite", favorite.toString());
-
 			await Api.add_climb(formData);
-
-			handleOpenChange(false); // close modal after success
+			handleOpenChange(false);
+			setRefresh((prev) => !prev);
 		} catch (err) {
 			console.error("Failed to add climb", err);
 		} finally {
