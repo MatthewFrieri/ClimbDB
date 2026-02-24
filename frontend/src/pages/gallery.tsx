@@ -23,11 +23,11 @@ export default function GalleryPage() {
 		complete: undefined,
 		flash: undefined,
 		favorite: undefined,
-		grade: undefined,
-		opinion: undefined,
-		color: undefined,
-		wall: undefined,
-		style: undefined,
+		grades: [],
+		opinions: [],
+		colors: [],
+		walls: [],
+		styles: [],
 	});
 
 	useEffect(() => {

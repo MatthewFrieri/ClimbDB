@@ -2,6 +2,7 @@ from typing import Annotated, List, Optional
 from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import or_
 from sqlmodel import Session, SQLModel, create_engine, select
 import shutil
 from pathlib import Path
@@ -98,22 +99,30 @@ def all_climbs(session: SessionDep):
 def filtered_climbs(session: SessionDep, filter: Filter):
     query = select(Climb)
 
-    mapping = {
+    bool_mappings = {
         Climb.is_video: filter.video,
         Climb.complete: filter.complete,
         Climb.flash: filter.flash,
         Climb.favorite: filter.favorite,
-        Climb.grade: filter.grade,
-        Climb.opinion: filter.opinion,
-        Climb.color: filter.color,
-        Climb.wall: filter.wall,
+    }
+    list_mappings = {
+        Climb.grade: filter.grades,
+        Climb.opinion: filter.opinions,
+        Climb.color: filter.colors,
+        Climb.wall: filter.walls,
     }
 
-    for column, value in mapping.items():
-        if value is not None:
-            query = query.where(column == value)
+    for col, val in bool_mappings.items():
+        if val is not None:
+            query = query.where(col == val)
 
-    if filter.style is not None:
-        query = query.where(Climb.styles.contains(filter.style))
+    for col, val in list_mappings.items():
+        if len(val) > 0:
+            query = query.where(col.in_(val))
+
+    if len(filter.styles) > 0:
+        query = query.where(or_(*[Climb.styles.like(f'%"{style.value}"%') for style in filter.styles]))
+    print(filter)
+    print(query)
 
     return session.exec(query).all()

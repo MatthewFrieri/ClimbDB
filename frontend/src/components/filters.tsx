@@ -12,11 +12,11 @@ export type Filter = {
 	complete: BoolFilter;
 	flash: BoolFilter;
 	favorite: BoolFilter;
-	grade: Grade | undefined;
-	opinion: Opinion | undefined;
-	color: Color | undefined;
-	wall: Wall | undefined;
-	style: Style | undefined;
+	grades: Grade[];
+	opinions: Opinion[];
+	colors: Color[];
+	walls: Wall[];
+	styles: Style[];
 };
 type FiltersProps = {
 	setFilters: (filters: Filter) => void;
@@ -28,11 +28,11 @@ export default function Filters({ setFilters }: FiltersProps) {
 	const [complete, setComplete] = useState<BoolFilter>();
 	const [flash, setFlash] = useState<BoolFilter>();
 	const [favorite, setFavorite] = useState<BoolFilter>();
-	const [grade, setGrade] = useState<Grade>();
-	const [opinion, setOpinion] = useState<Opinion>();
-	const [color, setColor] = useState<Color>();
-	const [wall, setWall] = useState<Wall>();
-	const [style, setStyle] = useState<Style>();
+	const [grades, setGrades] = useState<Grade[]>([]);
+	const [opinions, setOpinions] = useState<Opinion[]>([]);
+	const [colors, setColors] = useState<Color[]>([]);
+	const [walls, setWalls] = useState<Wall[]>([]);
+	const [styles, setStyles] = useState<Style[]>([]);
 
 	const boolObjects = [
 		{ var: video, setVar: setVideo, label: "Media", trueOption: "Video", falseOption: "Photo" },
@@ -41,16 +41,19 @@ export default function Filters({ setFilters }: FiltersProps) {
 		{ var: favorite, setVar: setFavorite, label: "Favorite", trueOption: "Yes", falseOption: "No" },
 	];
 	const listObjects = [
-		{ var: grade, setVar: setGrade, label: "Grade", type: Grade },
-		{ var: opinion, setVar: setOpinion, label: "Opinion", type: Opinion },
-		{ var: color, setVar: setColor, label: "Color", type: Color },
-		{ var: wall, setVar: setWall, label: "Wall", type: Wall },
-		{ var: style, setVar: setStyle, label: "Style", type: Style },
+		{ var: grades, setVar: setGrades, label: "Grade", type: Grade },
+		{ var: opinions, setVar: setOpinions, label: "Opinion", type: Opinion },
+		{ var: colors, setVar: setColors, label: "Color", type: Color },
+		{ var: walls, setVar: setWalls, label: "Wall", type: Wall },
+		{ var: styles, setVar: setStyles, label: "Style", type: Style },
 	];
 
 	const handleClear = () => {
-		[...boolObjects, ...listObjects].map((obj) => {
+		boolObjects.map((obj) => {
 			obj.setVar(undefined);
+		});
+		listObjects.map((obj) => {
+			obj.setVar([]);
 		});
 	};
 
@@ -60,11 +63,11 @@ export default function Filters({ setFilters }: FiltersProps) {
 			complete: complete,
 			flash: flash,
 			favorite: favorite,
-			grade: grade,
-			opinion: opinion,
-			color: color,
-			wall: wall,
-			style: style,
+			grades: grades,
+			opinions: opinions,
+			colors: colors,
+			walls: walls,
+			styles: styles,
 		});
 	}, [...boolObjects.map((obj) => obj.var), ...listObjects.map((obj) => obj.var)]);
 
@@ -84,21 +87,28 @@ export default function Filters({ setFilters }: FiltersProps) {
 									label={obj.label}
 									placeholder="All"
 									isClearable
-									selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+									selectionMode="multiple"
+									selectedKeys={new Set(obj.var as string[])}
 									onSelectionChange={(keys) => {
-										obj.setVar([...keys][0] as any);
+										obj.setVar(Array.from(keys) as any);
 									}}
-									renderValue={(items) =>
-										items.map((item) => {
-											const value = item.key as Color;
-											return (
-												<div key={item.key} className="flex items-center gap-2">
-													<CircleIcon size={16} className={colorMapping[value]} />
-													<span>{capitalize(value)}</span>
-												</div>
-											);
-										})
-									}
+									renderValue={(items) => (
+										<div className="flex flex-row items-center gap-2">
+											{items.length > 1
+												? items.map((item) => (
+														<CircleIcon key={item.key} size={16} className={colorMapping[item.key as Color]} />
+													))
+												: items.map((item) => {
+														const value = item.key as Color;
+														return (
+															<div key={item.key} className="flex items-center gap-1 shrink-0">
+																<CircleIcon size={16} className={colorMapping[value]} />
+																<span className="whitespace-nowrap">{capitalize(value)}</span>
+															</div>
+														);
+													})}
+										</div>
+									)}
 								>
 									{Object.values(Color).map((c: Color) => (
 										<SelectItem key={c} textValue={capitalize(c)}>
@@ -115,9 +125,10 @@ export default function Filters({ setFilters }: FiltersProps) {
 									label={obj.label}
 									placeholder="All"
 									isClearable
-									selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+									selectionMode="multiple"
+									selectedKeys={new Set(obj.var as string[])}
 									onSelectionChange={(keys) => {
-										obj.setVar([...keys][0] as any);
+										obj.setVar(Array.from(keys) as any);
 									}}
 								>
 									{Object.values(obj.type).map((val) => (

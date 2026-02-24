@@ -28,8 +28,8 @@ class Filter(BaseModel):
     complete: Optional[bool] = None
     flash: Optional[bool] = None
     favorite: Optional[bool] = None
-    grade: Optional[Grade] = None
-    opinion: Optional[Opinion] = None
-    color: Optional[Color] = None
-    wall: Optional[Wall] = None
-    style: Optional[Style] = None
+    grades: List[Grade] = []
+    opinions: List[Opinion] = []
+    colors: List[Color] = []
+    walls: List[Wall] = []
+    styles: List[Style] = []

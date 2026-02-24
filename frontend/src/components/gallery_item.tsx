@@ -19,7 +19,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 				className="group relative hover:brightness-90 aspect-square transition-all hover:cursor-pointer"
 			>
 				{climb.is_video ? (
-					<video src={mediaUrl} className="w-full h-full object-cover" autoPlay loop muted preload="metadata" />
+					<video src={mediaUrl} className="w-full h-full object-cover" loop muted preload="metadata" />
 				) : (
 					<Image src={mediaUrl} removeWrapper className="rounded-none w-full h-full object-cover" />
 				)}
