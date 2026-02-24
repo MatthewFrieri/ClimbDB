@@ -5,7 +5,7 @@ import { Form } from "@heroui/form";
 import { Button } from "@heroui/button";
 import { Checkbox } from "@heroui/checkbox";
 import { DatePicker } from "@heroui/date-picker";
-import { Grade, Color, Style, GradeOpinion } from "@/types";
+import { Grade, Color, Style, Opinion, Wall } from "@/types";
 import { Api } from "@/api";
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/modal";
 import { capitalize, colorMapping, formatFileSize } from "@/const";
@@ -21,26 +21,28 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 	const [date, setDate] = useState<DateValue | null>(today(getLocalTimeZone()));
 	const [media, setMedia] = useState<File | undefined>();
 	const [grade, setGrade] = useState<Grade | undefined>();
-	const [gradeOpinion, setGradeOpinion] = useState<GradeOpinion>(GradeOpinion.normal);
+	const [opinion, setOpinion] = useState<Opinion>(Opinion.normal);
 	const [color, setColor] = useState<Color | undefined>();
+	const [wall, setWall] = useState<Wall | undefined>();
 	const [styles, setStyles] = useState<Style[]>([]);
 	const [complete, setComplete] = useState<boolean>(true);
 	const [flash, setFlash] = useState<boolean>(false);
-	const [outdoor, setOutdoor] = useState<boolean>(false);
 	const [favorite, setFavorite] = useState<boolean>(false);
+
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 	const handleOpenChange = (newIsOpen: boolean) => {
 		setDate(today(getLocalTimeZone()));
 		setMedia(undefined);
 		setGrade(undefined);
-		setGradeOpinion(GradeOpinion.normal);
+		setOpinion(Opinion.normal);
 		setColor(undefined);
+		setWall(undefined);
 		setStyles([]);
 		setComplete(true);
 		setFlash(false);
-		setOutdoor(false);
 		setFavorite(false);
+
 		onOpenChange(newIsOpen);
 	};
 
@@ -54,12 +56,12 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 			formData.append("date", date!.toString());
 			formData.append("media", media!);
 			formData.append("grade", grade!.toString());
-			formData.append("grade_opinion", gradeOpinion!.toString());
-			formData.append("color", color ? color.toString() : "");
+			formData.append("opinion", opinion!.toString());
+			formData.append("color", color!.toString());
+			formData.append("wall", wall!.toString());
 			styles.forEach((style) => formData.append("styles", style.toString()));
 			formData.append("complete", complete.toString());
 			formData.append("flash", flash.toString());
-			formData.append("outdoor", outdoor.toString());
 			formData.append("favorite", favorite.toString());
 			await Api.add_climb(formData);
 			handleOpenChange(false);
@@ -135,13 +137,13 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 
 							<Select
 								isDisabled={isSubmitting}
-								label="Grade Opinion"
+								label="Opinion"
 								isRequired
-								selectedKeys={gradeOpinion ? new Set([gradeOpinion]) : new Set()}
-								onSelectionChange={(keys) => setGradeOpinion([...keys][0] as GradeOpinion)}
+								selectedKeys={opinion ? new Set([opinion]) : new Set()}
+								onSelectionChange={(keys) => setOpinion([...keys][0] as Opinion)}
 							>
-								{Object.values(GradeOpinion).map((op: string) => (
-									<SelectItem key={op}>{capitalize(op)}</SelectItem>
+								{Object.values(Opinion).map((o: string) => (
+									<SelectItem key={o}>{capitalize(o)}</SelectItem>
 								))}
 							</Select>
 						</span>
@@ -149,6 +151,7 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 						<Select
 							isDisabled={isSubmitting}
 							label="Color"
+							isRequired
 							selectedKeys={color ? new Set([color]) : new Set()}
 							onSelectionChange={(keys) => setColor([...keys][0] as Color)}
 							renderValue={(items) =>
@@ -175,6 +178,18 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 
 						<Select
 							isDisabled={isSubmitting}
+							label="Wall"
+							isRequired
+							selectedKeys={wall ? new Set([wall]) : new Set()}
+							onSelectionChange={(keys) => setWall([...keys][0] as Wall)}
+						>
+							{Object.values(Wall).map((w: string) => (
+								<SelectItem key={w}>{capitalize(w)}</SelectItem>
+							))}
+						</Select>
+
+						<Select
+							isDisabled={isSubmitting}
 							isRequired
 							label="Styles"
 							selectionMode="multiple"
@@ -193,9 +208,6 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 							<Checkbox isDisabled={isSubmitting} isSelected={flash} onValueChange={setFlash}>
 								Flash
 							</Checkbox>
-							<Checkbox isDisabled={isSubmitting} isSelected={outdoor} onValueChange={setOutdoor}>
-								Outdoor
-							</Checkbox>
 							<Checkbox isDisabled={isSubmitting} isSelected={favorite} onValueChange={setFavorite}>
 								Favorite
 							</Checkbox>
@@ -204,7 +216,7 @@ export default function AddItemModal({ isOpen, onOpenChange, setRefresh }: AddIt
 								color="success"
 								className="row-span-2 h-full"
 								isLoading={isSubmitting}
-								isDisabled={!date || !media || !grade || !gradeOpinion || styles.length == 0}
+								isDisabled={!date || !media || !grade || !opinion || !color || !wall || styles.length == 0}
 							>
 								{isSubmitting ? "Submitting..." : "Submit"}
 							</Button>

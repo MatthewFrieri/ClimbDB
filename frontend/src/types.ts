@@ -56,16 +56,15 @@ export interface components {
 			/** Is Video */
 			is_video: boolean;
 			grade: components["schemas"]["Grade"];
-			grade_opinion: components["schemas"]["GradeOpinion"];
-			color: components["schemas"]["Color"] | null;
+			opinion: components["schemas"]["Opinion"];
+			color: components["schemas"]["Color"];
+			wall: components["schemas"]["Wall"];
 			/** Styles */
 			styles: components["schemas"]["Style"][];
 			/** Complete */
 			complete: boolean;
 			/** Flash */
 			flash: boolean;
-			/** Outdoor */
-			outdoor: boolean;
 			/** Favorite */
 			favorite: boolean;
 		};
@@ -80,10 +79,15 @@ export interface components {
 		 */
 		Grade: Grade;
 		/**
-		 * GradeOpinion
+		 * Opinion
 		 * @enum {string}
 		 */
-		GradeOpinion: GradeOpinion;
+		Opinion: Opinion;
+		/**
+		 * Wall
+		 * @enum {string}
+		 */
+		Wall: Wall;
 		/** HTTPValidationError */
 		HTTPValidationError: {
 			/** Detail */
@@ -197,10 +201,20 @@ export enum Grade {
 	V9 = "V9",
 	V10 = "V10",
 }
-export enum GradeOpinion {
+export enum Opinion {
 	soft = "soft",
 	normal = "normal",
 	hard = "hard",
+}
+
+export enum Wall {
+	ash = "ash",
+	paradise = "paradise",
+	onyx = "onyx",
+	peanut = "peanut",
+	summit = "summit",
+	ridge = "ridge",
+	other = "other",
 }
 export enum Style {
 	jugs = "jugs",

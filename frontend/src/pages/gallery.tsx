@@ -22,11 +22,11 @@ export default function GalleryPage() {
 		video: undefined,
 		complete: undefined,
 		flash: undefined,
-		outdoor: undefined,
 		favorite: undefined,
 		grade: undefined,
-		grade_opinion: undefined,
+		opinion: undefined,
 		color: undefined,
+		wall: undefined,
 		style: undefined,
 	});
 

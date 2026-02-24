@@ -54,7 +54,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 						<p>{formatDate(climb.date)}</p>
 						<div className="flex flex-col gap-1">
 							<p>
-								{climb.grade}, {capitalize(climb.grade_opinion)}
+								{climb.grade}, {capitalize(climb.opinion)}
 							</p>
 							{climb.color ? (
 								<span className="flex flex-row items-center gap-2">
@@ -65,6 +65,7 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 								<p>No Color</p>
 							)}
 						</div>
+						<p>{capitalize(climb.wall)}</p>
 						<div>
 							<p>Styles</p>
 							<ul className="pl-5 list-disc">
@@ -76,7 +77,6 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 						<div className="flex flex-col gap-1">
 							{!climb.complete && <Chip startContent={<CrossIcon />}>Not Complete</Chip>}
 							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
-							{climb.outdoor && <Chip startContent={<CheckIcon />}>Outdoor</Chip>}
 						</div>
 					</div>
 				</ModalContent>

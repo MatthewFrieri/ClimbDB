@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field
 from sqlalchemy import Column
 from sqlalchemy.types import JSON
 
-from .const import Grade, GradeOpinion, Color, Style
+from .const import Grade, Opinion, Color, Style, Wall
 
 
 class Climb(SQLModel, table=True):
@@ -14,12 +14,12 @@ class Climb(SQLModel, table=True):
     media_url: str = Field()
     is_video: bool = Field(index=True)
     grade: Grade = Field(index=True)
-    grade_opinion: GradeOpinion = Field(index=True)
-    color: Optional[Color] = Field(index=True)
-    styles: List[Style] = Field(sa_column=Column(JSON))
+    opinion: Opinion = Field(index=True)
+    color: Color = Field(index=True)
+    wall: Wall = Field(index=True)
+    styles: List[Style] = Field(sa_column=Column(JSON), min_items=1)
     complete: bool = Field(index=True)
     flash: bool = Field(index=True)
-    outdoor: bool = Field(index=True)
     favorite: bool = Field(index=True)
 
 
@@ -27,9 +27,9 @@ class Filter(BaseModel):
     video: Optional[bool] = None
     complete: Optional[bool] = None
     flash: Optional[bool] = None
-    outdoor: Optional[bool] = None
     favorite: Optional[bool] = None
     grade: Optional[Grade] = None
-    grade_opinion: Optional[GradeOpinion] = None
+    opinion: Optional[Opinion] = None
     color: Optional[Color] = None
+    wall: Optional[Wall] = None
     style: Optional[Style] = None

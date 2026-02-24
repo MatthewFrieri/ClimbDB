@@ -8,7 +8,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .models import Climb, Filter
-from .const import DATABASE_URL, FRONTEND_URL, Grade, GradeOpinion, Style, Color
+from .const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
 
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -46,12 +46,12 @@ async def add_climb(
     date: str = Form(...),
     media: UploadFile = File(...),
     grade: Grade = Form(...),
-    grade_opinion: GradeOpinion = Form(...),
-    color: Optional[Color] = Form(None),
-    styles: List[Style] = Form([]),
+    opinion: Opinion = Form(...),
+    color: Color = Form(...),
+    wall: Wall = Form(...),
+    styles: List[Style] = Form(...),
     complete: bool = Form(...),
     flash: bool = Form(...),
-    outdoor: bool = Form(...),
     favorite: bool = Form(...),
 ):
 
@@ -73,12 +73,12 @@ async def add_climb(
             "media_url": str(file_path),
             "is_video": is_video,
             "grade": grade,
-            "grade_opinion": grade_opinion,
+            "opinion": opinion,
             "color": color,
+            "wall": wall,
             "styles": styles,
             "complete": complete,
             "flash": flash,
-            "outdoor": outdoor,
             "favorite": favorite,
         }
     )
@@ -102,11 +102,11 @@ def filtered_climbs(session: SessionDep, filter: Filter):
         Climb.is_video: filter.video,
         Climb.complete: filter.complete,
         Climb.flash: filter.flash,
-        Climb.outdoor: filter.outdoor,
         Climb.favorite: filter.favorite,
         Climb.grade: filter.grade,
-        Climb.grade_opinion: filter.grade_opinion,
+        Climb.opinion: filter.opinion,
         Climb.color: filter.color,
+        Climb.wall: filter.wall,
     }
 
     for column, value in mapping.items():

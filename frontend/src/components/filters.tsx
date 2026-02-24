@@ -1,4 +1,4 @@
-import { Grade, Color, Style, GradeOpinion } from "@/types";
+import { Grade, Color, Style, Opinion, Wall } from "@/types";
 import { Select, SelectItem } from "@heroui/select";
 import { useEffect, useState } from "react";
 import { Button } from "@heroui/button";
@@ -11,11 +11,11 @@ export type Filter = {
 	video: BoolFilter;
 	complete: BoolFilter;
 	flash: BoolFilter;
-	outdoor: BoolFilter;
 	favorite: BoolFilter;
 	grade: Grade | undefined;
-	grade_opinion: GradeOpinion | undefined;
+	opinion: Opinion | undefined;
 	color: Color | undefined;
+	wall: Wall | undefined;
 	style: Style | undefined;
 };
 type FiltersProps = {
@@ -27,24 +27,24 @@ export default function Filters({ setFilters }: FiltersProps) {
 	const [video, setVideo] = useState<BoolFilter>();
 	const [complete, setComplete] = useState<BoolFilter>();
 	const [flash, setFlash] = useState<BoolFilter>();
-	const [outdoor, setOutdoor] = useState<BoolFilter>();
 	const [favorite, setFavorite] = useState<BoolFilter>();
 	const [grade, setGrade] = useState<Grade>();
-	const [gradeOpinion, setGradeOpinion] = useState<GradeOpinion>();
+	const [opinion, setOpinion] = useState<Opinion>();
 	const [color, setColor] = useState<Color>();
+	const [wall, setWall] = useState<Wall>();
 	const [style, setStyle] = useState<Style>();
 
 	const boolObjects = [
 		{ var: video, setVar: setVideo, label: "Media", trueOption: "Video", falseOption: "Photo" },
 		{ var: complete, setVar: setComplete, label: "Complete", trueOption: "Yes", falseOption: "No" },
 		{ var: flash, setVar: setFlash, label: "Flash", trueOption: "Yes", falseOption: "No" },
-		{ var: outdoor, setVar: setOutdoor, label: "Outdoor", trueOption: "Yes", falseOption: "No" },
 		{ var: favorite, setVar: setFavorite, label: "Favorite", trueOption: "Yes", falseOption: "No" },
 	];
 	const listObjects = [
 		{ var: grade, setVar: setGrade, label: "Grade", type: Grade },
-		{ var: gradeOpinion, setVar: setGradeOpinion, label: "Opinion", type: GradeOpinion },
+		{ var: opinion, setVar: setOpinion, label: "Opinion", type: Opinion },
 		{ var: color, setVar: setColor, label: "Color", type: Color },
+		{ var: wall, setVar: setWall, label: "Wall", type: Wall },
 		{ var: style, setVar: setStyle, label: "Style", type: Style },
 	];
 
@@ -59,11 +59,11 @@ export default function Filters({ setFilters }: FiltersProps) {
 			video: video,
 			complete: complete,
 			flash: flash,
-			outdoor: outdoor,
 			favorite: favorite,
 			grade: grade,
-			grade_opinion: gradeOpinion,
+			opinion: opinion,
 			color: color,
+			wall: wall,
 			style: style,
 		});
 	}, [...boolObjects.map((obj) => obj.var), ...listObjects.map((obj) => obj.var)]);
@@ -77,21 +77,6 @@ export default function Filters({ setFilters }: FiltersProps) {
 				<ModalContent>
 					<ModalHeader className="text-2xl">Filters</ModalHeader>
 					<ModalBody className="gap-4 grid grid-cols-2 grid-rows-5 grid-flow-col pb-6">
-						{boolObjects.map((obj) => (
-							<Select
-								key={obj.label}
-								label={obj.label}
-								placeholder="All"
-								isClearable
-								selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
-								onSelectionChange={(keys) => {
-									obj.setVar([...keys][0] as BoolFilter);
-								}}
-							>
-								<SelectItem key={1}>{obj.trueOption}</SelectItem>
-								<SelectItem key={0}>{obj.falseOption}</SelectItem>
-							</Select>
-						))}
 						{listObjects.map((obj) =>
 							obj.type == Color ? (
 								<Select
@@ -141,6 +126,21 @@ export default function Filters({ setFilters }: FiltersProps) {
 								</Select>
 							),
 						)}
+						{boolObjects.map((obj) => (
+							<Select
+								key={obj.label}
+								label={obj.label}
+								placeholder="All"
+								isClearable
+								selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+								onSelectionChange={(keys) => {
+									obj.setVar([...keys][0] as BoolFilter);
+								}}
+							>
+								<SelectItem key={1}>{obj.trueOption}</SelectItem>
+								<SelectItem key={0}>{obj.falseOption}</SelectItem>
+							</Select>
+						))}
 						<span className="flex gap-3">
 							<Button color="success" onPress={onOpenChange} className="w-full h-full">
 								Done

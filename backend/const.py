@@ -20,7 +20,7 @@ class Grade(str, Enum):
     V10 = "V10"
 
 
-class GradeOpinion(str, Enum):
+class Opinion(str, Enum):
     SOFT = "soft"
     NORMAL = "normal"
     HARD = "hard"
@@ -37,6 +37,16 @@ class Color(str, Enum):
     PINK = "pink"
     BLACK = "black"
     WHITE = "white"
+
+
+class Wall(str, Enum):
+    ASH = "ash"
+    PARADISE = "paradise"
+    ONYX = "onyx"
+    PEANUT = "peanut"
+    SUMMIT = "summit"
+    RIDGE = "ridge"
+    OTHER = "other"
 
 
 class Style(str, Enum):
