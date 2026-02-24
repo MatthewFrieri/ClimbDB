@@ -1,6 +1,6 @@
 import { BACKEND_URL, capitalize, Climb, colorMapping, formatDate } from "@/const";
 import { Image } from "@heroui/image";
-import { CheckIcon, CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
+import { CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Chip } from "@heroui/chip";
 
