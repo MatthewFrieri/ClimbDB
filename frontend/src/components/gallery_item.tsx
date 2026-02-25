@@ -3,12 +3,14 @@ import { Image } from "@heroui/image";
 import { CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Chip } from "@heroui/chip";
+import DeleteButton from "./delete_button";
 
 type GalleryItemProps = {
 	climb: Climb;
+	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function GalleryItem({ climb }: GalleryItemProps) {
+export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 	const { isOpen, onOpenChange } = useDisclosure();
 	const mediaUrl = `${BACKEND_URL}/${climb.media_url}`;
 
@@ -78,6 +80,9 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
 							{!climb.complete && <Chip startContent={<CrossIcon />}>Not Complete</Chip>}
 							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
 						</div>
+					</div>
+					<div className="bottom-4 left-4 z-10 absolute flex flex-col gap-5">
+						<DeleteButton climb={climb} setRefresh={setRefresh} />
 					</div>
 				</ModalContent>
 			</Modal>

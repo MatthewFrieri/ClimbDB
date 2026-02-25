@@ -1,3 +1,4 @@
+import os
 from typing import Annotated, List, Optional
 from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -122,7 +123,24 @@ def filtered_climbs(session: SessionDep, filter: Filter):
 
     if len(filter.styles) > 0:
         query = query.where(or_(*[Climb.styles.like(f'%"{style.value}"%') for style in filter.styles]))
-    print(filter)
-    print(query)
 
     return session.exec(query).all()
+
+
+@app.delete("/delete_climb/{climb_id}")
+def delete_climb(session: SessionDep, climb_id: int):
+    climb = session.get(Climb, climb_id)
+
+    if not climb:
+        raise HTTPException(status_code=404, detail="Climb not found")
+
+    media_path = climb.media_url
+
+    session.delete(climb)
+    session.commit()
+
+    try:
+        if media_path and os.path.exists(media_path):
+            os.remove(media_path)
+    except OSError as e:
+        print(f"Failed to delete media file {media_path}: {e}")

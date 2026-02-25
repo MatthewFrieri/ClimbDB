@@ -93,7 +93,7 @@ export default function GalleryPage() {
 			) : (
 				<div className="gap-2 grid grid-cols-6 px-2 pb-2">
 					{sortedClimbs.map((climb) => (
-						<GalleryItem climb={climb} key={climb.id} />
+						<GalleryItem key={climb.id} climb={climb} setRefresh={setRefresh} />
 					))}
 				</div>
 			)}

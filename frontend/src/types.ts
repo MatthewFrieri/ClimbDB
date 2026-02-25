@@ -45,7 +45,7 @@ export interface components {
 		/** Climb */
 		Climb: {
 			/** Id */
-			id?: number | null;
+			id: number;
 			/**
 			 * Date
 			 * Format: date
