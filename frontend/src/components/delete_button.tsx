@@ -30,7 +30,7 @@ export default function DeleteButton({ climb, setRefresh }: DeleteButtonProps) {
 
 	return (
 		<>
-			<Button color="danger" onPress={onOpen}>
+			<Button color="danger" variant="bordered" size="sm" onPress={onOpen}>
 				Delete
 			</Button>
 
@@ -38,7 +38,7 @@ export default function DeleteButton({ climb, setRefresh }: DeleteButtonProps) {
 				<ModalContent>
 					{(onClose) => (
 						<>
-							<ModalHeader>Delete climb?</ModalHeader>
+							<ModalHeader>Delete Climb?</ModalHeader>
 
 							<ModalBody>
 								<p>This action cannot be undone. The climb and its media will be permanently deleted.</p>

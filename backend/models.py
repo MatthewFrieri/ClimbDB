@@ -33,3 +33,14 @@ class Filter(BaseModel):
     colors: List[Color] = []
     walls: List[Wall] = []
     styles: List[Style] = []
+
+
+class Revision(BaseModel):
+    complete: bool
+    flash: bool
+    favorite: bool
+    grade: Grade
+    opinion: Opinion
+    color: Color
+    wall: Wall
+    styles: List[Style]

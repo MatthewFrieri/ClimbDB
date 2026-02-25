@@ -4,6 +4,8 @@ import { CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Chip } from "@heroui/chip";
 import DeleteButton from "./delete_button";
+import EditModal from "./edit_modal";
+import { Wall } from "@/types";
 
 type GalleryItemProps = {
 	climb: Climb;
@@ -52,7 +54,7 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 					) : (
 						<Image src={mediaUrl} removeWrapper className="-z-10 rounded-none w-full h-full object-contain" />
 					)}
-					<div className="top-4 left-4 z-10 absolute flex flex-col gap-5 text-white">
+					<div className="top-0 left-0 z-10 absolute flex flex-col gap-5 bg-black/80 p-8 rounded-br-xl text-white">
 						<p>{formatDate(climb.date)}</p>
 						<div className="flex flex-col gap-1">
 							<p>
@@ -64,10 +66,10 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 									<p>{capitalize(climb.color)}</p>
 								</span>
 							) : (
-								<p>No Color</p>
+								<p>Unknown Color</p>
 							)}
 						</div>
-						<p>{capitalize(climb.wall)}</p>
+						<p>{climb.wall == Wall.other ? "Unknown Wall" : capitalize(climb.wall)}</p>
 						<div>
 							<p>Styles</p>
 							<ul className="pl-5 list-disc">
@@ -80,9 +82,10 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 							{!climb.complete && <Chip startContent={<CrossIcon />}>Not Complete</Chip>}
 							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
 						</div>
-					</div>
-					<div className="bottom-4 left-4 z-10 absolute flex flex-col gap-5">
-						<DeleteButton climb={climb} setRefresh={setRefresh} />
+						<span className="flex flex-row gap-2">
+							<EditModal climb={climb} setRefresh={setRefresh} />
+							<DeleteButton climb={climb} setRefresh={setRefresh} />
+						</span>
 					</div>
 				</ModalContent>
 			</Modal>

@@ -18,11 +18,11 @@ export type Filter = {
 	walls: Wall[];
 	styles: Style[];
 };
-type FiltersProps = {
+type FiltersModalProps = {
 	setFilters: (filters: Filter) => void;
 };
 
-export default function Filters({ setFilters }: FiltersProps) {
+export default function FiltersModal({ setFilters }: FiltersModalProps) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [video, setVideo] = useState<BoolFilter>();
 	const [complete, setComplete] = useState<BoolFilter>();

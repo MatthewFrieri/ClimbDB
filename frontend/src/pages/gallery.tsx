@@ -4,7 +4,7 @@ import { Api } from "@/api";
 import GalleryItem from "@/components/gallery_item";
 import { Select, SelectItem } from "@heroui/select";
 import { Grade } from "@/types";
-import Filters, { Filter } from "@/components/filters";
+import FiltersModal, { Filter } from "@/components/filters_modal";
 import { Button } from "@heroui/button";
 import { PlusIcon } from "@/components/icons";
 import AddItemModal from "@/components/add_item_modal";
@@ -67,7 +67,7 @@ export default function GalleryPage() {
 					<p className="font-semibold">
 						{climbs.length} {climbs.length == 1 ? "Result" : "Results"}
 					</p>
-					<Filters setFilters={setFilters} />
+					<FiltersModal setFilters={setFilters} />
 					<Select
 						label="Sort By"
 						className="w-36"

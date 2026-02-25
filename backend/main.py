@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-from .models import Climb, Filter
+from .models import Climb, Filter, Revision
 from .const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
 
 engine = create_engine(DATABASE_URL, echo=True)
@@ -125,6 +125,32 @@ def filtered_climbs(session: SessionDep, filter: Filter):
         query = query.where(or_(*[Climb.styles.like(f'%"{style.value}"%') for style in filter.styles]))
 
     return session.exec(query).all()
+
+
+@app.patch("/edit_climb/{climb_id}")
+def edit_climb(
+    session: SessionDep,
+    climb_id: int,
+    revision: Revision,
+):
+    climb = session.get(Climb, climb_id)
+    if not climb:
+        raise HTTPException(status_code=404, detail="Climb not found")
+
+    climb.complete = revision.complete
+    climb.flash = revision.flash
+    climb.favorite = revision.favorite
+    climb.grade = revision.grade
+    climb.opinion = revision.opinion
+    climb.color = revision.color
+    climb.wall = revision.wall
+    climb.styles = revision.styles
+
+    session.add(climb)
+    session.commit()
+    session.refresh(climb)
+
+    return climb
 
 
 @app.delete("/delete_climb/{climb_id}")
