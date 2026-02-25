@@ -33,11 +33,7 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 						{climb.flash && <FlashIcon />}
 						{!climb.complete && <CrossIcon />}
 					</span>
-					<StarIcon
-						className={`transition-opacity duration-150
-                        ${climb.favorite ? "opacity-100 fill-amber-400" : "opacity-0 fill-gray-300 group-hover:opacity-100"}
-                    `}
-					/>
+					{climb.favorite && <StarIcon />}
 				</span>
 			</div>
 			<Modal isOpen={isOpen} onOpenChange={onOpenChange} size="full">
@@ -60,14 +56,10 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 							<p>
 								{climb.grade}, {capitalize(climb.opinion)}
 							</p>
-							{climb.color ? (
-								<span className="flex flex-row items-center gap-2">
-									<CircleIcon className={colorMapping[climb.color]} />
-									<p>{capitalize(climb.color)}</p>
-								</span>
-							) : (
-								<p>Unknown Color</p>
-							)}
+							<span className="flex flex-row items-center gap-2">
+								<CircleIcon className={colorMapping[climb.color]} />
+								<p>{capitalize(climb.color)}</p>
+							</span>
 						</div>
 						<p>{climb.wall == Wall.other ? "Unknown Wall" : capitalize(climb.wall)}</p>
 						<div>
@@ -81,6 +73,7 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 						<div className="flex flex-col gap-1">
 							{!climb.complete && <Chip startContent={<CrossIcon />}>Not Complete</Chip>}
 							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
+							{climb.favorite && <Chip startContent={<StarIcon size={20} />}>Favorite</Chip>}
 						</div>
 						<span className="flex flex-row gap-2">
 							<EditModal climb={climb} setRefresh={setRefresh} />
