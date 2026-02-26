@@ -10,7 +10,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .models import Climb, Filter, Revision
-from .const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
+from .const import DATABASE_URL, FRONTEND_URL, GRADE_ORDER, Grade, Opinion, Style, Color, Wall
 
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -170,3 +170,17 @@ def delete_climb(session: SessionDep, climb_id: int):
             os.remove(media_path)
     except OSError as e:
         print(f"Failed to delete media file {media_path}: {e}")
+
+
+@app.post("/charts/grade_histogram_data")
+def grade_histogram_data(session: SessionDep, climb_ids: List[int]):
+
+    distinct_grades = list(session.exec(select(Climb.grade).distinct()))
+    distinct_grades = sorted(distinct_grades, key=lambda x: GRADE_ORDER.index(x))
+
+    grades = session.exec(select(Climb.grade).where(Climb.id.in_(climb_ids))).all()
+
+    return {
+        "x_labels": [grade.value for grade in distinct_grades],
+        "y_values": [grades.count(grade) for grade in distinct_grades],
+    }

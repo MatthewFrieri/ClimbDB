@@ -20,10 +20,30 @@ class Grade(str, Enum):
     V10 = "V10"
 
 
+GRADE_ORDER = [
+    Grade.UNKNOWN,
+    Grade.VB,
+    Grade.V0,
+    Grade.V1,
+    Grade.V2,
+    Grade.V3,
+    Grade.V4,
+    Grade.V5,
+    Grade.V6,
+    Grade.V7,
+    Grade.V8,
+    Grade.V9,
+    Grade.V10,
+]
+
+
 class Opinion(str, Enum):
     SOFT = "soft"
     NORMAL = "normal"
     HARD = "hard"
+
+
+OPINION_ORDER = [Opinion.SOFT, Opinion.NORMAL, Opinion.HARD]
 
 
 class Color(str, Enum):
@@ -37,6 +57,20 @@ class Color(str, Enum):
     PINK = "pink"
     BLACK = "black"
     WHITE = "white"
+
+
+COLOR_ORDER = [
+    Color.RED,
+    Color.ORANGE,
+    Color.YELLOW,
+    Color.GREEN,
+    Color.TEAL,
+    Color.BLUE,
+    Color.PURPLE,
+    Color.PINK,
+    Color.BLACK,
+    Color.WHITE,
+]
 
 
 class Wall(str, Enum):

@@ -12,6 +12,7 @@ export class Api {
 	static async add_climb(formData: FormData): Promise<AxiosResponse> {
 		return this.api.post("/add_climb", formData);
 	}
+
 	static async get_filtered_climbs(filters: Filter): Promise<AxiosResponse> {
 		return this.api.post("/filtered_climbs", filters);
 	}
@@ -22,5 +23,9 @@ export class Api {
 
 	static async delete_climb(id: number): Promise<AxiosResponse> {
 		return this.api.delete(`/delete_climb/${id}`);
+	}
+
+	static async grade_histogram_data(ids: number[]): Promise<AxiosResponse> {
+		return this.api.post("/charts/grade_histogram_data", ids);
 	}
 }
