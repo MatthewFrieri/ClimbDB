@@ -7,11 +7,11 @@ type ChartData = {
 	y_values: number[];
 };
 
-export default function GradeHistogram({ climb_ids }: { climb_ids: number[] }) {
+export default function OpinionHistogram({ climb_ids }: { climb_ids: number[] }) {
 	const [data, setData] = useState<ChartData | null>(null);
 
 	useEffect(() => {
-		Api.grade_histogram_data(climb_ids).then((response) => {
+		Api.opinion_data(climb_ids).then((response) => {
 			setData(response.data);
 		});
 	}, [climb_ids]);

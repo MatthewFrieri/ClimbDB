@@ -7,28 +7,37 @@ type ChartData = {
 	y_values: number[];
 };
 
-export default function GradeHistogram({ climb_ids }: { climb_ids: number[] }) {
+export default function StyleRadar({ climb_ids }: { climb_ids: number[] }) {
 	const [data, setData] = useState<ChartData | null>(null);
 
 	useEffect(() => {
-		Api.grade_histogram_data(climb_ids).then((response) => {
+		Api.style_radar_data(climb_ids).then((response) => {
 			setData(response.data);
 		});
 	}, [climb_ids]);
 	if (!data) return;
 
 	const options = {
-		xAxis: {
-			type: "category",
-			data: data.x_labels,
+		title: {
+			text: "Styles",
 		},
-		yAxis: {
-			type: "value",
+
+		radar: {
+			indicator: data.x_labels.map((label) => ({ name: label, max: Math.max(...data.y_values) * 1.15 })),
 		},
 		series: [
 			{
-				data: data.y_values,
-				type: "bar",
+				type: "radar",
+				tooltip: {
+					trigger: "item",
+				},
+				areaStyle: {},
+				data: [
+					{
+						name: "Styles",
+						value: data.y_values,
+					},
+				],
 			},
 		],
 	};
