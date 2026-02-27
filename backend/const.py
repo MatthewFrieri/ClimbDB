@@ -41,11 +41,17 @@ class Color(str, Enum):
 
 class Wall(str, Enum):
     ASH = "ash"
-    PARADISE = "paradise"
-    ONYX = "onyx"
-    PEANUT = "peanut"
-    SUMMIT = "summit"
     RIDGE = "ridge"
+    BIG_SHOW = "big show"
+    MOCHA = "mocha"
+    HOLLOW = "hollow"
+    GROTTO = "grotto"
+    ROOF = "roof"
+    PEBBLE = "pebble"
+    SUMMIT = "summit"
+    ONYX = "onyx"
+    PARADISE = "paradise"
+    PEANUT = "peanut"
     OTHER = "other"
 
 

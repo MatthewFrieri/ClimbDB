@@ -310,6 +310,6 @@ def wall_data(session: SessionDep, climb_ids: List[int]):
     walls = session.exec(select(Climb.wall).where(Climb.id.in_(climb_ids))).all()
 
     return {
-        "x_labels": [wall.value.capitalize() for wall in Wall],
+        "x_labels": [wall.value for wall in Wall],
         "y_values": [walls.count(wall) for wall in Wall],
     }

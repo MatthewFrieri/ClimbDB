@@ -209,11 +209,17 @@ export enum Opinion {
 
 export enum Wall {
 	ash = "ash",
-	paradise = "paradise",
-	onyx = "onyx",
-	peanut = "peanut",
-	summit = "summit",
 	ridge = "ridge",
+	bigShow = "big show",
+	mocha = "mocha",
+	hollow = "hollow",
+	grotto = "grotto",
+	roof = "roof",
+	pebble = "pebble",
+	summit = "summit",
+	onyx = "onyx",
+	paradise = "paradise",
+	peanut = "peanut",
 	other = "other",
 }
 export enum Style {

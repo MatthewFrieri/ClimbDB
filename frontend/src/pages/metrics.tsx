@@ -6,6 +6,7 @@ import GradeLineplot from "@/components/charts/grade_lineplot";
 import OpinionHistogram from "@/components/charts/opinion_histogram";
 import StyleHistogram from "@/components/charts/style_histogram";
 import StyleRadar from "@/components/charts/style_radar";
+import WallHeatmap from "@/components/charts/wall_heatmap";
 import WallHistogram from "@/components/charts/wall_histogram";
 import FiltersModal, { Filter } from "@/components/filters_modal";
 import { Climb } from "@/const";
@@ -43,15 +44,16 @@ export default function MetricsPage() {
 				</span>
 			</header>
 
-			<div className="grid grid-cols-[2fr_1fr] grid-rows-2 grid-flow-col px-20">
+			<div className="grid grid-cols-[1fr_1fr] grid-rows-3 grid-flow-col px-20">
 				{/* <GradeHistogram climb_ids={climbIds} />
-				<OpinionHistogram climb_ids={climbIds} />
 				<StyleHistogram climb_ids={climbIds} />
 				<WallHistogram climb_ids={climbIds} /> */}
 				<DateHeatmap climb_ids={climbIds} />
 				<GradeLineplot climb_ids={climbIds} />
 				<ColorHistogram climb_ids={climbIds} />
 				<StyleRadar climb_ids={climbIds} />
+				<OpinionHistogram climb_ids={climbIds} />
+				<WallHeatmap climb_ids={climbIds} />
 			</div>
 		</div>
 	);

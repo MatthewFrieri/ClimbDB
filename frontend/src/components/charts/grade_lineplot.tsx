@@ -20,9 +20,9 @@ export default function GradeLineplot({ climb_ids }: { climb_ids: number[] }) {
 			setData(response.data);
 		});
 	}, [climb_ids]);
-
 	if (!data) return null;
 
+	const ONE_MONTH = 30 * 24 * 60 * 60 * 1000;
 	const options = {
 		title: {
 			text: "Grade Progression",
@@ -41,6 +41,8 @@ export default function GradeLineplot({ climb_ids }: { climb_ids: number[] }) {
 		xAxis: {
 			type: "time",
 			boundaryGap: false,
+			minInterval: ONE_MONTH,
+			maxInterval: ONE_MONTH,
 			axisLabel: {
 				formatter: (value: number) => {
 					const date = new Date(value);
