@@ -35,7 +35,7 @@ export default function GradeLineplot({ climb_ids }: { climb_ids: number[] }) {
 		},
 		legend: {
 			orient: "vertical",
-			right: 10,
+			right: 0,
 			top: 50,
 		},
 		xAxis: {
@@ -52,7 +52,6 @@ export default function GradeLineplot({ climb_ids }: { climb_ids: number[] }) {
 		},
 		yAxis: {
 			type: "value",
-			name: "Climbs",
 		},
 		series: data.lines.map((line) => ({
 			name: line.grade,

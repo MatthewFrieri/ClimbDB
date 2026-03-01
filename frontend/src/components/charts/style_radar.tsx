@@ -21,7 +21,6 @@ export default function StyleRadar({ climb_ids }: { climb_ids: number[] }) {
 		title: {
 			text: "Styles",
 		},
-
 		radar: {
 			indicator: data.x_labels.map((label) => ({ name: label, max: Math.max(...data.y_values) * 1.15 })),
 		},

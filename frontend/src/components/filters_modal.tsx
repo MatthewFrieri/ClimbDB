@@ -74,7 +74,7 @@ export default function FiltersModal({ setFilters }: FiltersModalProps) {
 	return (
 		<>
 			<Button color="primary" onPress={onOpen} className="h-14">
-				Open <br /> Filters
+				Filters
 			</Button>
 			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
 				<ModalContent>

@@ -313,3 +313,21 @@ def wall_data(session: SessionDep, climb_ids: List[int]):
         "x_labels": [wall.value for wall in Wall],
         "y_values": [walls.count(wall) for wall in Wall],
     }
+
+
+@app.post("/charts/bool_data")
+def bool_data(session: SessionDep, climb_ids: List[int]):
+
+    bool_data = session.exec(select(Climb.complete, Climb.flash, Climb.favorite).where(Climb.id.in_(climb_ids))).all()
+    print(
+        {
+            "complete": sum([x[0] for x in bool_data]),
+            "flash": sum([x[1] for x in bool_data]),
+            "favorite": sum([x[2] for x in bool_data]),
+        }
+    )
+    return {
+        "complete": sum([x[0] for x in bool_data]),
+        "flash": sum([x[1] for x in bool_data]),
+        "favorite": sum([x[2] for x in bool_data]),
+    }

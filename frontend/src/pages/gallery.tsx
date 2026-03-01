@@ -9,10 +9,12 @@ import { Button } from "@heroui/button";
 import { PlusIcon } from "@/components/icons";
 import AddItemModal from "@/components/add_item_modal";
 import { useDisclosure } from "@heroui/modal";
+import { useNavigate } from "react-router-dom";
 
 type SortField = "date_new_to_old" | "date_old_to_new" | "grade_high_to_low" | "grade_low_to_high";
 
 export default function GalleryPage() {
+	const navigate = useNavigate();
 	const { isOpen, onOpenChange } = useDisclosure();
 
 	const [climbs, setClimbs] = useState<Climb[]>([]);
@@ -62,7 +64,15 @@ export default function GalleryPage() {
 	return (
 		<>
 			<header className="flex justify-between items-center p-4 w-full">
-				<h1 className="font-bold text-5xl">Gallery</h1>
+				<span className="flex items-baseline gap-7">
+					<h1 className="font-bold text-5xl">Gallery</h1>
+					<h2
+						onClick={() => navigate("/metrics")}
+						className="font-bold text-neutral-400 hover:text-neutral-500 text-3xl transition-all hover:cursor-pointer"
+					>
+						Metrics
+					</h2>
+				</span>
 				<span className="flex items-center gap-3">
 					<p className="font-semibold">
 						{climbs.length} {climbs.length == 1 ? "Result" : "Results"}

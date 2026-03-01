@@ -48,4 +48,7 @@ export class Api {
 	static async wall_data(ids: number[]): Promise<AxiosResponse> {
 		return this.api.post("/charts/wall_data", ids);
 	}
+	static async bool_data(ids: number[]): Promise<AxiosResponse> {
+		return this.api.post("/charts/bool_data", ids);
+	}
 }

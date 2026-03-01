@@ -18,6 +18,14 @@ export default function OpinionHistogram({ climb_ids }: { climb_ids: number[] })
 	if (!data) return;
 
 	const options = {
+		title: {
+			text: "Opinion Distribution",
+		},
+		tooltip: {
+			axisPointer: {
+				type: "shadow",
+			},
+		},
 		xAxis: {
 			type: "category",
 			data: data.x_labels,

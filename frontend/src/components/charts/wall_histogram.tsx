@@ -18,9 +18,16 @@ export default function WallHistogram({ climb_ids }: { climb_ids: number[] }) {
 	if (!data) return;
 
 	const options = {
+		title: {
+			text: "Wall Distribution",
+		},
 		xAxis: {
 			type: "category",
 			data: data.x_labels,
+			axisLabel: {
+				interval: 0, // show every label
+				rotate: -45, // set to 30 or 45 if labels overlap
+			},
 		},
 		yAxis: {
 			type: "value",

@@ -18,6 +18,14 @@ export default function GradeHistogram({ climb_ids }: { climb_ids: number[] }) {
 	if (!data) return;
 
 	const options = {
+		title: {
+			text: "Grade Distribution",
+		},
+		tooltip: {
+			axisPointer: {
+				type: "shadow",
+			},
+		},
 		xAxis: {
 			type: "category",
 			data: data.x_labels,

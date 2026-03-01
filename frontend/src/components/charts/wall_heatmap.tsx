@@ -49,8 +49,8 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
 	};
 
 	return (
-		<div className="relative w-[500px] font-semibold text-white text-sm text-center">
-			<Image src="floor_layout.png" className="border-12 border-black rounded-none" />
+		<div className="relative bg-red-100 w-[500px] font-semibold text-black text-sm text-center">
+			<Image src="floor_layout.png" className="border-8 border-black rounded-none" />
 			{data.x_labels.map((label, index) => {
 				if (label == Wall.other) return;
 				return (
@@ -72,7 +72,7 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
 										data.y_values[index],
 										minValue,
 										maxValue,
-									)} 20%, white 70%`,
+									)} 20%, #fee2e2 70%`,
 								}}
 								className={`absolute rounded-full w-20 aspect-square ${labelToPositions[label as Wall][1]}`}
 							></div>
