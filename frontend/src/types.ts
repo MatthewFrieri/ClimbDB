@@ -214,7 +214,6 @@ export enum Wall {
 	mocha = "mocha",
 	hollow = "hollow",
 	grotto = "grotto",
-	roof = "roof",
 	pebble = "pebble",
 	summit = "summit",
 	onyx = "onyx",

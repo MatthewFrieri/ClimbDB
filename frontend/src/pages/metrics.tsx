@@ -81,16 +81,13 @@ export default function MetricsPage() {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col items-center gap-6 w-1/2">
+					<div className="flex flex-col items-center -mt-6 w-1/2">
 						<WallHeatmap climb_ids={climbIds} />
-						{/* <div className="w-full">
-    						<WallHistogram climb_ids={climbIds} />
-						</div> */}
-						<div className="flex justify-center items-center w-full h-full">
+						<div className="flex justify-center items-center gap-x-10 w-full h-full">
 							<BoolNumber climb_ids={climbIds} field="complete" />
-							<div className="bg-black mx-12 w-1.5 h-[80%]" />
+							<div className="bg-neutral-800 w-1 h-32" />
 							<BoolNumber climb_ids={climbIds} field="flash" />
-							<div className="bg-black mx-12 w-1.5 h-[80%]" />
+							<div className="bg-neutral-800 w-1 h-32" />
 							<BoolNumber climb_ids={climbIds} field="favorite" />
 						</div>
 					</div>

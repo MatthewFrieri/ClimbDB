@@ -46,7 +46,6 @@ class Wall(str, Enum):
     MOCHA = "mocha"
     HOLLOW = "hollow"
     GROTTO = "grotto"
-    ROOF = "roof"
     PEBBLE = "pebble"
     SUMMIT = "summit"
     ONYX = "onyx"

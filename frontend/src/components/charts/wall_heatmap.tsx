@@ -1,8 +1,8 @@
 import { Api } from "@/api";
 import { capitalize } from "@/const";
 import { Wall } from "@/types";
-import { Image } from "@heroui/image";
 import { useEffect, useState } from "react";
+import { WallMap } from "./wall_map";
 
 type ChartData = {
 	start_date: string;
@@ -25,18 +25,17 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
 	const maxValue = Math.max(...data.y_values);
 
 	const labelToPositions: Record<Wall, [string, string]> = {
-		[Wall.ash]: ["top-8 left-3", "top-6 left-2"],
-		[Wall.ridge]: ["top-36 left-9", "top-28 left-12"],
-		[Wall.bigShow]: ["top-50 left-5", "top-48 left-8"],
-		[Wall.mocha]: ["top-71 left-5", "top-68 left-5"],
-		[Wall.hollow]: ["top-12 left-55", "top-5 left-40 w-24"],
-		[Wall.grotto]: ["top-30 left-54", "top-23 left-51 w-24"],
-		[Wall.roof]: ["top-59 left-54", "top-52 left-43"],
-		[Wall.pebble]: ["top-58 left-72", "top-48 left-72"],
-		[Wall.summit]: ["top-54 left-96", "top-44 left-93"],
-		[Wall.onyx]: ["top-67 left-96", "top-63 left-96"],
-		[Wall.paradise]: ["top-66 left-77", "top-63 left-75"],
-		[Wall.peanut]: ["top-69 left-60", "top-65 left-55"],
+		[Wall.ash]: ["top-8 left-7", "top-0 left-7"],
+		[Wall.ridge]: ["top-28 left-8", "top-21 left-11"],
+		[Wall.bigShow]: ["top-45 left-4", "top-42 left-6"],
+		[Wall.mocha]: ["top-67 left-3", "top-64 left-1"],
+		[Wall.hollow]: ["top-9 left-53", "top-2 left-39 w-24"],
+		[Wall.grotto]: ["top-26 left-56", "top-18 left-50 w-24"],
+		[Wall.pebble]: ["top-56 left-70", "top-43 left-70"],
+		[Wall.summit]: ["top-53 left-101", "top-42 left-99 w-24"],
+		[Wall.onyx]: ["top-66 left-102", "top-63 left-99"],
+		[Wall.paradise]: ["top-63 left-77", "top-62 left-75"],
+		[Wall.peanut]: ["top-62 left-52", "top-55 left-40 w-24"],
 		[Wall.other]: ["", ""],
 	};
 
@@ -49,37 +48,40 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
 	};
 
 	return (
-		<div className="relative bg-red-100 w-[500px] font-semibold text-black text-sm text-center">
-			<Image src="floor_layout.png" className="border-8 border-black rounded-none" />
-			{data.x_labels.map((label, index) => {
-				if (label == Wall.other) return;
-				return (
-					<>
-						<p className={`absolute z-10 ${labelToPositions[label as Wall][0]}`}>
-							{label === Wall.bigShow ? (
-								<p>
-									Big <br /> Show
-								</p>
-							) : (
-								capitalize(label)
+		<div className="flex flex-col items-center gap-2">
+			<p className="font-bold text-neutral-800 text-xl">Walls</p>
+			<div className="relative w-[500px] font-semibold text-black text-sm text-center">
+				<WallMap className="fill-slate-300 stroke-neutral-800 border-3 border-neutral-800" />
+				{data.x_labels.map((label, index) => {
+					if (label == Wall.other) return;
+					return (
+						<>
+							<p className={`absolute ${labelToPositions[label as Wall][0]}`}>
+								{label === Wall.bigShow ? (
+									<p>
+										Big <br /> Show
+									</p>
+								) : (
+									capitalize(label)
+								)}
+							</p>
+							{data.y_values[index] > 0 && (
+								<div
+									key={index}
+									style={{
+										background: `radial-gradient(circle, ${valueToRed(
+											data.y_values[index],
+											minValue,
+											maxValue,
+										)} 20%, #fee2e2 70%`,
+									}}
+									className={`absolute rounded-full w-20 -z-10 aspect-square ${labelToPositions[label as Wall][1]}`}
+								></div>
 							)}
-						</p>
-						{data.y_values[index] > 0 && (
-							<div
-								key={index}
-								style={{
-									background: `radial-gradient(circle, ${valueToRed(
-										data.y_values[index],
-										minValue,
-										maxValue,
-									)} 20%, #fee2e2 70%`,
-								}}
-								className={`absolute rounded-full w-20 aspect-square ${labelToPositions[label as Wall][1]}`}
-							></div>
-						)}
-					</>
-				);
-			})}
+						</>
+					);
+				})}
+			</div>
 		</div>
 	);
 }

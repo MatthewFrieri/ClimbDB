@@ -28,7 +28,7 @@ export function FlashIcon({ size = 24, className }: IconProps) {
 				strokeWidth="1.5"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-			></path>
+			/>
 		</svg>
 	);
 }
@@ -42,7 +42,7 @@ export function CheckIcon({ className }: IconProps) {
 				strokeWidth="4"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-			></path>
+			/>
 		</svg>
 	);
 }
@@ -57,7 +57,7 @@ export function CrossIcon({ size = 24, className }: IconProps) {
 				strokeWidth="1.75"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-			></path>
+			/>
 		</svg>
 	);
 }
@@ -65,7 +65,7 @@ export function CrossIcon({ size = 24, className }: IconProps) {
 export function CircleIcon({ size = 24, className }: IconProps) {
 	return (
 		<svg width={size} height={size} viewBox="0 0 16 16" className={className}>
-			<circle cx="8" cy="8" r="8"></circle>
+			<circle cx="8" cy="8" r="8" />
 		</svg>
 	);
 }
@@ -73,7 +73,7 @@ export function CircleIcon({ size = 24, className }: IconProps) {
 export function PlusIcon({ size = 24, className }: IconProps) {
 	return (
 		<svg width={size} height={size} viewBox="0 0 24 24" className={className}>
-			<path d="M6 12H18M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+			<path d="M6 12H18M12 6V18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 		</svg>
 	);
 }

@@ -18,9 +18,9 @@ export default function BoolNumber({
 	}, [climb_ids]);
 
 	return (
-		<div className="font-bold text-black text-center">
-			<p className="mb-2 text-7xl">{data}</p>
-			<p className="text-xl">
+		<div className="font-bold text-neutral-800 text-center">
+			<p className="mb-1 text-6xl">{data}</p>
+			<p className="text-lg">
 				{capitalize(field)}
 				{field == "flash" && "e"}d
 			</p>
