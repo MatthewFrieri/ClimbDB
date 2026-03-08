@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field
 from sqlalchemy import Column
 from sqlalchemy.types import JSON
 
-from .const import Grade, Opinion, Color, Style, Wall
+from const import Grade, Opinion, Color, Style, Wall
 
 
 class Climb(SQLModel, table=True):

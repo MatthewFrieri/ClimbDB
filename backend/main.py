@@ -11,8 +11,8 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-from .models import Climb, Filter, Revision
-from .const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
+from models import Climb, Filter, Revision
+from const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
 
 engine = create_engine(DATABASE_URL, echo=True)
 
