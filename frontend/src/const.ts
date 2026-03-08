@@ -1,6 +1,6 @@
 import { Color, type components } from "@/types";
 
-export const BACKEND_URL = "http://localhost:8000";
+export const BACKEND_URL = "http://192.168.2.150:8000";
 
 type Schemas = components["schemas"];
 export type Climb = Schemas["Climb"];
