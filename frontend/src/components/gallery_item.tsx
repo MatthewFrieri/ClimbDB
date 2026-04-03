@@ -1,5 +1,4 @@
 import { BACKEND_URL, capitalize, Climb, colorMapping, formatDate } from "@/const";
-import { Image } from "@heroui/image";
 import { CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
 import { Chip } from "@heroui/chip";
@@ -20,12 +19,12 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 		<>
 			<div
 				onClick={onOpenChange}
-				className="group relative hover:brightness-90 aspect-square transition-all hover:cursor-pointer"
+				className="group relative hover:opacity-80 aspect-square transform-gpu transform-opacity transition-opacity hover:cursor-pointer will-change-opacity will-change-transform"
 			>
 				{climb.is_video ? (
 					<video src={mediaUrl} className="w-full h-full object-cover" loop muted preload="metadata" />
 				) : (
-					<Image src={mediaUrl} removeWrapper className="rounded-none w-full h-full object-cover" />
+					<img src={mediaUrl} className="rounded-none w-full h-full object-cover" loading="lazy"/>
 				)}
 				<span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
 					<span className="flex flex-row gap-2">
@@ -48,7 +47,7 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 							preload="metadata"
 						/>
 					) : (
-						<Image src={mediaUrl} removeWrapper className="-z-10 rounded-none w-full h-full object-contain" />
+						<img src={mediaUrl} className="-z-10 rounded-none w-full h-full object-contain" />
 					)}
 					<div className="top-0 left-0 z-10 absolute flex flex-col gap-5 bg-black/80 p-8 rounded-br-xl text-white">
 						<p>{formatDate(climb.date)}</p>
