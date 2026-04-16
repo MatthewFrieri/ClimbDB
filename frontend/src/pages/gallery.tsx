@@ -96,7 +96,7 @@ export default function GalleryPage() {
                 </div>
                 <div className="flex justify-between md:justify-end items-center gap-3 w-full md:w-auto">
                     <p className="font-semibold">
-                        {climbs.length}{" "}
+                        {climbs.length}
                         {climbs.length == 1 ? "Result" : "Results"}
                     </p>
                     <FiltersModal setFilters={setFilters} />

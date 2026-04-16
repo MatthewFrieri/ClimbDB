@@ -56,39 +56,47 @@ export default function MetricsPage() {
                     <FiltersModal setFilters={setFilters} />
                 </div>
             </header>
-            <div className="flex flex-col px-20">
-                <div className="flex">
-                    <div className="flex-2 pr-10">
+
+            <div className="flex flex-col gap-6 px-4 md:px-20">
+                {/* Top charts */}
+                <div className="flex md:flex-row flex-col gap-6">
+                    <div className="md:flex-[2] w-full">
                         <DateHeatmap climb_ids={climbIds} />
                     </div>
-                    <div className="flex-1">
+                    <div className="md:flex-1 w-full">
                         <ColorHistogram climb_ids={climbIds} />
                     </div>
-                    <div className="flex-1">
+                    <div className="md:flex-1 w-full">
                         <StyleRadar climb_ids={climbIds} />
                     </div>
                 </div>
-                <div className="flex">
-                    <div className="flex flex-col -mt-6 w-1/2">
-                        <div className="flex-2 -ml-20">
+
+                {/* Bottom section */}
+                <div className="flex md:flex-row flex-col gap-6">
+                    {/* Left side */}
+                    <div className="flex flex-col gap-6 w-full md:w-1/2">
+                        <div className="md:-mt-6 md:-ml-20 w-full">
                             <GradeLineplot climb_ids={climbIds} />
                         </div>
-                        <div className="flex -mt-2">
-                            <div className="flex-1">
+
+                        <div className="flex md:flex-row flex-col gap-6 md:-mt-2">
+                            <div className="w-full">
                                 <GradeHistogram climb_ids={climbIds} />
                             </div>
-                            <div className="flex-1">
+                            <div className="w-full">
                                 <OpinionHistogram climb_ids={climbIds} />
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center -mt-6 w-1/2">
+
+                    {/* Right side */}
+                    <div className="flex flex-col items-center md:gap-6 md:-mt-6 mb-16 md:mb-0 w-full md:w-1/2">
                         <WallHeatmap climb_ids={climbIds} />
-                        <div className="flex justify-center items-center gap-x-10 w-full h-full">
+                        <div className="flex justify-center items-center gap-x-4 md:gap-x-10 w-full">
                             <BoolNumber climb_ids={climbIds} field="complete" />
-                            <div className="bg-neutral-800 w-1 h-32" />
+                            <div className="bg-neutral-800 w-1 h-16 md:h-32" />
                             <BoolNumber climb_ids={climbIds} field="flash" />
-                            <div className="bg-neutral-800 w-1 h-32" />
+                            <div className="bg-neutral-800 w-1 h-16 md:h-32" />
                             <BoolNumber climb_ids={climbIds} field="favorite" />
                         </div>
                     </div>
