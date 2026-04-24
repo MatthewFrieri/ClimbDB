@@ -42,7 +42,7 @@ export default function MetricsPage() {
                 <div className="flex justify-between md:justify-start items-baseline gap-7 w-full md:w-auto">
                     <h1 className="font-bold text-4xl md:text-5xl">Metrics</h1>
                     <h2
-                        onClick={() => navigate("/")}
+                        onClick={() => navigate("/gallery")}
                         className="font-bold text-neutral-400 hover:text-neutral-500 text-2xl md:text-3xl transition-all hover:cursor-pointer"
                     >
                         Gallery

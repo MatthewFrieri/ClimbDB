@@ -9,6 +9,11 @@ export class Api {
 		withCredentials: true,
 	});
 
+    // Login
+    static async login(formData: FormData): Promise<AxiosResponse> {
+        return this.api.post("/login", formData)
+    }
+
 	// Climbs
 	static async add_climb(formData: FormData): Promise<AxiosResponse> {
 		return this.api.post("/add_climb", formData);

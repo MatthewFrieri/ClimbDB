@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 import datetime
 from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
@@ -17,23 +17,21 @@ class Climb(SQLModel, table=True):
     opinion: Opinion = Field(index=True)
     color: Color = Field(index=True)
     wall: Wall = Field(index=True)
-    styles: List[Style] = Field(sa_column=Column(JSON), min_items=1)
+    styles: list[Style] = Field(sa_column=Column(JSON), min_items=1)
     complete: bool = Field(index=True)
     flash: bool = Field(index=True)
     favorite: bool = Field(index=True)
-
 
 class Filter(BaseModel):
     video: Optional[bool] = None
     complete: Optional[bool] = None
     flash: Optional[bool] = None
     favorite: Optional[bool] = None
-    grades: List[Grade] = []
-    opinions: List[Opinion] = []
-    colors: List[Color] = []
-    walls: List[Wall] = []
-    styles: List[Style] = []
-
+    grades: list[Grade] = []
+    opinions: list[Opinion] = []
+    colors: list[Color] = []
+    walls: list[Wall] = []
+    styles: list[Style] = []
 
 class Revision(BaseModel):
     complete: bool
@@ -43,4 +41,4 @@ class Revision(BaseModel):
     opinion: Opinion
     color: Color
     wall: Wall
-    styles: List[Style]
+    styles: list[Style]

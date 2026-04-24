@@ -2,6 +2,7 @@ from enum import Enum
 
 FRONTEND_URL = "http://192.168.2.150:5173"
 DATABASE_URL = "sqlite:///data/database.db"
+SESSION_DURATION_HOURS = 1 # hours
 
 
 class Grade(str, Enum):

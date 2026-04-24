@@ -1,8 +1,8 @@
-from collections import defaultdict
 import os
+from collections import defaultdict
 from datetime import date, timedelta
-from typing import Annotated, List
-from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException
+from typing import Annotated, Optional
+from fastapi import FastAPI, Response, UploadFile, HTTPException, Depends, Cookie, File, Form 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import or_
@@ -11,19 +11,23 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
+from browser_session import BrowserSessionManager
 from models import Climb, Filter, Revision
-from const import DATABASE_URL, FRONTEND_URL, Grade, Opinion, Style, Color, Wall
+from const import DATABASE_URL, FRONTEND_URL, SESSION_DURATION_HOURS, Grade, Opinion, Style, Color, Wall
+
+# SETUP
 
 engine = create_engine(DATABASE_URL, echo=True)
-
 
 def get_session():
     with Session(engine) as session:
         yield session
 
-
 SessionDep = Annotated[Session, Depends(get_session)]
 app = FastAPI()
+browser_session_manager = BrowserSessionManager(
+    session_duration_hours=SESSION_DURATION_HOURS
+)
 
 origins = [FRONTEND_URL]
 app.add_middleware(
@@ -38,14 +42,37 @@ UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 app.mount("/data/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+# ENDPOINTS
 
 @app.on_event("startup")
 def on_startup():
     SQLModel.metadata.create_all(engine)
 
+@app.post("/login")
+def login(
+    response: Response,
+    username: str = Form(...),
+    password: str = Form(...),
+):
+    new_session = browser_session_manager.validate_user_pass(username, password)
+    if new_session is None:
+        raise HTTPException(status_code=401, detail="Invalid login credentials")
+    
+    response.set_cookie(
+        key="session_id",
+        value=new_session.session_id,
+        expires=new_session.expires_at,
+        # domain="frieri.ca",
+        # httponly=True,
+        # secure=True,
+        httponly=False,
+        secure=False,
+        samesite="lax",
+    )
+    return {"message": "Login successful"}
 
 @app.post("/add_climb")
-async def add_climb(
+def add_climb(
     session: SessionDep,
     date: str = Form(...),
     media: UploadFile = File(...),
@@ -53,11 +80,15 @@ async def add_climb(
     opinion: Opinion = Form(...),
     color: Color = Form(...),
     wall: Wall = Form(...),
-    styles: List[Style] = Form(...),
+    styles: list[Style] = Form(...),
     complete: bool = Form(...),
     flash: bool = Form(...),
     favorite: bool = Form(...),
+    session_id: Optional[str] = Cookie(default=None),
 ):
+
+    if session_id is None or not browser_session_manager.validate_session_id(session_id):
+        raise HTTPException(status_code=401, detail="Unauthorized, no session cookie")
 
     is_video = media.content_type.startswith("video/")
     is_image = media.content_type.startswith("image/")
@@ -134,7 +165,12 @@ def edit_climb(
     session: SessionDep,
     climb_id: int,
     revision: Revision,
+    session_id: Optional[str] = Cookie(default=None),
 ):
+    
+    if session_id is None or not browser_session_manager.validate_session_id(session_id):
+        raise HTTPException(status_code=401, detail="Unauthorized, no session cookie")
+    
     climb = session.get(Climb, climb_id)
     if not climb:
         raise HTTPException(status_code=404, detail="Climb not found")
@@ -156,7 +192,15 @@ def edit_climb(
 
 
 @app.delete("/delete_climb/{climb_id}")
-def delete_climb(session: SessionDep, climb_id: int):
+def delete_climb(
+    session: SessionDep,
+    climb_id: int,
+    session_id: Optional[str] = Cookie(default=None),
+):
+    
+    if session_id is None or not browser_session_manager.validate_session_id(session_id):
+        raise HTTPException(status_code=401, detail="Unauthorized, no session cookie")
+    
     climb = session.get(Climb, climb_id)
 
     if not climb:
@@ -175,7 +219,7 @@ def delete_climb(session: SessionDep, climb_id: int):
 
 
 @app.post("/charts/date_heatmap_data")
-def date_heatmap_data(session: SessionDep, climb_ids: List[int]):
+def date_heatmap_data(session: SessionDep, climb_ids: list[int]):
 
     today = date.today()
     end_date = today.isoformat()
@@ -195,7 +239,7 @@ def date_heatmap_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/grade_lineplot_data")
-def grade_lineplot_data(session: SessionDep, climb_ids: List[int]):
+def grade_lineplot_data(session: SessionDep, climb_ids: list[int]):
 
     start_date = date.today() - timedelta(days=365)
     end_date = date.today()
@@ -244,7 +288,7 @@ def grade_lineplot_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/grade_histogram_data")
-def grade_histogram_data(session: SessionDep, climb_ids: List[int]):
+def grade_histogram_data(session: SessionDep, climb_ids: list[int]):
 
     distinct_grades = list(session.exec(select(Climb.grade).distinct()))
     grades = session.exec(select(Climb.grade).where(Climb.id.in_(climb_ids))).all()
@@ -256,7 +300,7 @@ def grade_histogram_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/opinion_data")
-def opinion_data(session: SessionDep, climb_ids: List[int]):
+def opinion_data(session: SessionDep, climb_ids: list[int]):
 
     opinions = session.exec(select(Climb.opinion).where(Climb.id.in_(climb_ids))).all()
 
@@ -267,7 +311,7 @@ def opinion_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/color_data")
-def color_data(session: SessionDep, climb_ids: List[int]):
+def color_data(session: SessionDep, climb_ids: list[int]):
 
     distinct_colors = list(session.exec(select(Climb.color).distinct()))
     colors = session.exec(select(Climb.color).where(Climb.id.in_(climb_ids))).all()
@@ -279,7 +323,7 @@ def color_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/style_histogram_data")
-def style_histogram_data(session: SessionDep, climb_ids: List[int]):
+def style_histogram_data(session: SessionDep, climb_ids: list[int]):
 
     styles = session.exec(select(Climb.styles).where(Climb.id.in_(climb_ids))).all()
     styles = [i for s in styles for i in s]
@@ -291,7 +335,7 @@ def style_histogram_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/style_radar_data")
-def style_histogram_data(session: SessionDep, climb_ids: List[int]):
+def style_histogram_data(session: SessionDep, climb_ids: list[int]):
 
     styles = session.exec(select(Climb.styles).where(Climb.id.in_(climb_ids))).all()
     styles = [i for s in styles for i in s]
@@ -305,7 +349,7 @@ def style_histogram_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/wall_data")
-def wall_data(session: SessionDep, climb_ids: List[int]):
+def wall_data(session: SessionDep, climb_ids: list[int]):
 
     walls = session.exec(select(Climb.wall).where(Climb.id.in_(climb_ids))).all()
 
@@ -316,7 +360,7 @@ def wall_data(session: SessionDep, climb_ids: List[int]):
 
 
 @app.post("/charts/bool_data")
-def bool_data(session: SessionDep, climb_ids: List[int]):
+def bool_data(session: SessionDep, climb_ids: list[int]):
 
     bool_data = session.exec(select(Climb.complete, Climb.flash, Climb.favorite).where(Climb.id.in_(climb_ids))).all()
     print(
