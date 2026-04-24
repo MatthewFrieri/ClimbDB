@@ -10,6 +10,7 @@ export default function LoginPage() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,17 +22,21 @@ export default function LoginPage() {
             formData.append("username", username);
             formData.append("password", password);
             await Api.login(formData);
-            navigate("/gallery")
-        } catch (err) {
+            setError(null); 
+            navigate("/gallery");
+
+        } catch (err: any) {
             console.error("Failed to login", err);
+            setError("Wrong username or password");
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <>
-            <Form onSubmit={handleSubmit} className="flex flex-col gap-4 w-80">
+        <div className="flex flex-col justify-center items-center gap-10 h-screen">
+            <h1 className="font-bold text-8xl">ClimbDB</h1>
+            <Form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-80">
                 <input
                     type="text"
                     placeholder="Username"
@@ -48,19 +53,24 @@ export default function LoginPage() {
                     required
                     className="p-2 border rounded"
                 />
-                <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-blue-500 disabled:opacity-50 p-2 rounded text-white"
-                >
-                    Login
-                </Button>
+                {error && (
+                    <p className="text-red-500 text-sm">{error}</p>
+                )}
+                <span className="flex gap-4 mt-4 mb-40">
+                    <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="bg-blue-500 disabled:opacity-50 p-2 text-white"
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        onPress={() => navigate("/gallery")}
+                    >
+                        Continue as guest
+                    </Button>
+                </span>
             </Form>
-            <Button
-                onPress={() => navigate("/gallery")}
-            >
-                Continue as guest
-            </Button>
-        </>
+        </div>
     )
 }
