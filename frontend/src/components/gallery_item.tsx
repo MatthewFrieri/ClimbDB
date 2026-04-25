@@ -13,6 +13,7 @@ type GalleryItemProps = {
 
 export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 	const { isOpen, onOpenChange } = useDisclosure();
+	const previewUrl =`${BACKEND_URL}/${climb.is_video ? climb.thumbnail_url : climb.media_url}`;
 	const mediaUrl = `${BACKEND_URL}/${climb.media_url}`;
 
 	return (
@@ -21,11 +22,7 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 				onClick={onOpenChange}
 				className="group relative hover:opacity-80 aspect-square transform-gpu transform-opacity transition-opacity hover:cursor-pointer will-change-opacity will-change-transform"
 			>
-				{climb.is_video ? (
-					<video src={mediaUrl} className="w-full h-full object-cover" loop muted preload="metadata" />
-				) : (
-					<img src={mediaUrl} className="rounded-none w-full h-full object-cover" loading="lazy"/>
-				)}
+                <img src={previewUrl} className="rounded-none w-full h-full object-cover" loading="lazy"/>
 				<span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
 					<span className="flex flex-row gap-2">
 						<div className="bg-white px-2 py-0.5 rounded-xl outline-2 font-semibold">{climb.grade}</div>

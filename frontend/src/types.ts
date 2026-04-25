@@ -53,6 +53,8 @@ export interface components {
 			date: string;
 			/** Media Url */
 			media_url: string;
+			/** Thumbnail Url */
+			thumbnail_url?: string;
 			/** Is Video */
 			is_video: boolean;
 			grade: components["schemas"]["Grade"];
