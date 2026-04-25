@@ -25,7 +25,7 @@ export default function GalleryPage() {
     const [sortField, setSortField] = useState<SortField>("date_new_to_old");
     const [refresh, setRefresh] = useState<boolean>(true);
     const [filters, setFilters] = useState<Filter>({
-        video: undefined,
+        video: 1,
         complete: undefined,
         flash: undefined,
         favorite: undefined,

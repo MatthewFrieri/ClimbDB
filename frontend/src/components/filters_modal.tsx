@@ -24,7 +24,7 @@ type FiltersModalProps = {
 
 export default function FiltersModal({ setFilters }: FiltersModalProps) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [video, setVideo] = useState<BoolFilter>();
+	const [video, setVideo] = useState<BoolFilter>(1);
 	const [complete, setComplete] = useState<BoolFilter>();
 	const [flash, setFlash] = useState<BoolFilter>();
 	const [favorite, setFavorite] = useState<BoolFilter>();
@@ -143,7 +143,7 @@ export default function FiltersModal({ setFilters }: FiltersModalProps) {
 								label={obj.label}
 								placeholder="All"
 								isClearable
-								selectedKeys={obj.var ? new Set([obj.var]) : new Set()}
+								selectedKeys={obj.var !== undefined ? new Set([String(obj.var)]) : new Set()}
 								onSelectionChange={(keys) => {
 									obj.setVar([...keys][0] as BoolFilter);
 								}}

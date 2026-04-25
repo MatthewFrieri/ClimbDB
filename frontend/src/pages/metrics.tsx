@@ -19,7 +19,7 @@ export default function MetricsPage() {
 
     const [climbIds, setClimbIds] = useState<number[]>([]);
     const [filters, setFilters] = useState<Filter>({
-        video: undefined,
+        video: 1,
         complete: undefined,
         flash: undefined,
         favorite: undefined,
