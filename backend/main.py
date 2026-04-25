@@ -9,11 +9,12 @@ from sqlalchemy import or_
 from sqlmodel import Session, SQLModel, create_engine, select
 import shutil
 from pathlib import Path
+import ffmpeg
 from uuid import uuid4
 
 from browser_session import BrowserSessionManager
 from models import Climb, Filter, Revision
-from const import DATABASE_URL, FRONTEND_URL, SESSION_DURATION_HOURS, Grade, Opinion, Style, Color, Wall
+from const import DATA_DIR, DATABASE_URL, FRONTEND_URL, SESSION_DURATION_HOURS, THUMBNAILS_DIR, UPLOADS_DIR, Grade, Opinion, Style, Color, Wall
 
 # SETUP
 
@@ -38,9 +39,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = Path("data/uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
-app.mount("/data/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+UPLOADS_DIR.mkdir(exist_ok=True)
+THUMBNAILS_DIR.mkdir(exist_ok=True)
+app.mount("/data", StaticFiles(directory=DATA_DIR), name="data")
 
 # ENDPOINTS
 
@@ -95,17 +96,33 @@ def add_climb(
     if not (is_video or is_image):
         raise HTTPException(status_code=400, detail="Only images or videos are allowed")
 
+    uuid = uuid4()
     extension = Path(media.filename).suffix
-    file_path = UPLOAD_DIR / f"{uuid4()}{extension}"
+    file_path = UPLOADS_DIR / f"{uuid}{extension}"
 
     # Save file
     with file_path.open("wb") as buffer:
         shutil.copyfileobj(media.file, buffer)
 
+    # Save thumbnail
+    if is_video:
+        thumbnail_path = THUMBNAILS_DIR / f"{uuid}.jpg"
+
+        probe = ffmpeg.probe(str(file_path))
+        duration = float(probe["format"]["duration"])
+        midpoint = duration / 2
+        (
+            ffmpeg
+            .input(str(file_path), ss=midpoint)
+            .output(str(thumbnail_path), vframes=1)
+            .run()
+        )
+
     climb = Climb.model_validate(
         {
             "date": date,
             "media_url": str(file_path),
+            "thumbnail_url": str(thumbnail_path) if is_video else None,
             "is_video": is_video,
             "grade": grade,
             "opinion": opinion,
@@ -206,14 +223,16 @@ def delete_climb(
     if not climb:
         raise HTTPException(status_code=404, detail="Climb not found")
 
-    media_path = climb.media_url
-
     session.delete(climb)
     session.commit()
 
     try:
+        media_path = climb.media_url
         if media_path and os.path.exists(media_path):
             os.remove(media_path)
+        thumbnail_path = climb.thumbnail_url
+        if thumbnail_path and os.path.exists(thumbnail_path):
+            os.remove(thumbnail_path)
     except OSError as e:
         print(f"Failed to delete media file {media_path}: {e}")
 

@@ -1,8 +1,13 @@
 from enum import Enum
+from pathlib import Path
 
+DATA_DIR = Path("data")
+UPLOADS_DIR = DATA_DIR / "uploads"
+THUMBNAILS_DIR = DATA_DIR / "thumbnails"
+
+SESSION_DURATION_HOURS = 1 # hours
 FRONTEND_URL = "https://climbdb.frieri.ca"
 DATABASE_URL = "sqlite:///data/database.db"
-SESSION_DURATION_HOURS = 1 # hours
 
 
 class Grade(str, Enum):

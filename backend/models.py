@@ -12,6 +12,7 @@ class Climb(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     date: datetime.date = Field(index=True)
     media_url: str = Field()
+    thumbnail_url: Optional[str] = Field()
     is_video: bool = Field(index=True)
     grade: Grade = Field(index=True)
     opinion: Opinion = Field(index=True)
