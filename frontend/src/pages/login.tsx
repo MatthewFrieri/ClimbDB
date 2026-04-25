@@ -36,14 +36,14 @@ export default function LoginPage() {
     return (
         <div className="flex flex-col justify-center items-center gap-10 h-screen">
             <h1 className="font-bold text-8xl">ClimbDB</h1>
-            <Form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-80">
+            <Form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
                 <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                    className="p-2 border rounded"
+                    className="p-2 border rounded w-60"
                 />
                 <input
                     type="password"
@@ -51,7 +51,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="p-2 border rounded"
+                    className="p-2 border rounded w-60"
                 />
                 {error && (
                     <p className="text-red-500 text-sm">{error}</p>
