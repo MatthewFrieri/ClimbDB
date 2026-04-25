@@ -14,7 +14,7 @@ from uuid import uuid4
 
 from browser_session import BrowserSessionManager
 from models import Climb, Filter, Revision
-from const import DATA_DIR, DATABASE_URL, FRONTEND_URL, SESSION_DURATION_HOURS, THUMBNAILS_DIR, UPLOADS_DIR, Grade, Opinion, Style, Color, Wall
+from const import DATA_DIR, DATABASE_URL, DOMAIN, FRONTEND_URL, SESSION_DURATION_HOURS, THUMBNAILS_DIR, UPLOADS_DIR, Grade, Opinion, Style, Color, Wall
 
 # SETUP
 
@@ -63,11 +63,9 @@ def login(
         key="session_id",
         value=new_session.session_id,
         expires=new_session.expires_at,
-        # domain="frieri.ca",
-        # httponly=True,
-        # secure=True,
-        httponly=False,
-        secure=False,
+        domain=DOMAIN,
+        httponly=True,
+        secure=True,
         samesite="lax",
     )
     return {"message": "Login successful"}
