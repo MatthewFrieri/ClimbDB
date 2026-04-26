@@ -6,10 +6,11 @@ import { Select, SelectItem } from "@heroui/select";
 import { Grade } from "@/types";
 import FiltersModal, { Filter } from "@/components/filters_modal";
 import { Button } from "@heroui/button";
-import { PlusIcon } from "@/components/icons";
+import { CircleIcon, PlusIcon } from "@/components/icons";
 import AddItemModal from "@/components/add_item_modal";
 import { useDisclosure } from "@heroui/modal";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/auth_context";
 
 type SortField =
     | "date_new_to_old"
@@ -18,9 +19,9 @@ type SortField =
     | "grade_low_to_high";
 
 export default function GalleryPage() {
+    const {isLoggedIn, setIsLoggedIn} = useAuth()
     const navigate = useNavigate();
     const { isOpen, onOpenChange } = useDisclosure();
-
     const [climbs, setClimbs] = useState<Climb[]>([]);
     const [sortField, setSortField] = useState<SortField>("date_new_to_old");
     const [refresh, setRefresh] = useState<boolean>(true);
@@ -35,6 +36,12 @@ export default function GalleryPage() {
         walls: [],
         styles: [],
     });
+
+    useEffect(() => {
+        Api.is_logged_in().then((response) => {
+            setIsLoggedIn(response.data.logged_in);
+        });
+    }, []);
 
     useEffect(() => {
         Api.get_filtered_climbs(filters).then((response) => {
@@ -95,6 +102,9 @@ export default function GalleryPage() {
                     </h2>
                 </div>
                 <div className="flex justify-between md:justify-end items-center gap-3 w-full md:w-auto">
+                    {isLoggedIn && (
+                        <CircleIcon size={10} className="drop-shadow-[0_0_3px_rgba(64,197,124,0.8)] fill-green-500" />
+                    )}
                     <p className="font-semibold">
                         {climbs.length}{" "}
                         {climbs.length == 1 ? "Result" : "Results"}
@@ -143,22 +153,25 @@ export default function GalleryPage() {
                     ))}
                 </div>
             )}
-
-            <Button
-                onPress={onOpenChange}
-                isIconOnly
-                radius="full"
-                color="primary"
-                data-hover={false}
-                className="right-6 bottom-6 z-10 fixed hover:bg-blue-400 w-16 h-16"
-            >
-                <PlusIcon size={36} />
-            </Button>
-            <AddItemModal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                setRefresh={setRefresh}
-            />
+            {isLoggedIn && (
+                <>
+                    <Button
+                        onPress={onOpenChange}
+                        isIconOnly
+                        radius="full"
+                        color="primary"
+                        data-hover={false}
+                        className="right-6 bottom-6 z-10 fixed hover:bg-blue-400 w-16 h-16"
+                    >
+                        <PlusIcon size={36} />
+                    </Button>
+                    <AddItemModal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        setRefresh={setRefresh}
+                    />
+                </>
+            )}
         </>
     );
 }

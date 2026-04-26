@@ -5,6 +5,7 @@ import { Chip } from "@heroui/chip";
 import DeleteButton from "./delete_button";
 import EditModal from "./edit_modal";
 import { Wall } from "@/types";
+import { useAuth } from "@/contexts/auth_context";
 
 type GalleryItemProps = {
 	climb: Climb;
@@ -12,6 +13,7 @@ type GalleryItemProps = {
 };
 
 export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
+    const {isLoggedIn, setIsLoggedIn} = useAuth()
 	const { isOpen, onOpenChange } = useDisclosure();
 	const previewUrl =`${BACKEND_URL}/${climb.is_video ? climb.thumbnail_url : climb.media_url}`;
 	const mediaUrl = `${BACKEND_URL}/${climb.media_url}`;
@@ -71,10 +73,12 @@ export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
 							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
 							{climb.favorite && <Chip startContent={<StarIcon size={20} />}>Favorite</Chip>}
 						</div>
-						<span className="flex flex-row gap-2">
-							<EditModal climb={climb} setRefresh={setRefresh} />
-							<DeleteButton climb={climb} setRefresh={setRefresh} />
-						</span>
+						{isLoggedIn && (
+                            <span className="flex flex-row gap-2">
+							    <EditModal climb={climb} setRefresh={setRefresh} />
+							    <DeleteButton climb={climb} setRefresh={setRefresh} />
+						    </span>
+                        )}
 					</div>
 				</ModalContent>
 			</Modal>

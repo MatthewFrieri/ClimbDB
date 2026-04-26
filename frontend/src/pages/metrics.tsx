@@ -11,12 +11,13 @@ import WallHeatmap from "@/components/charts/wall_heatmap";
 import WallHistogram from "@/components/charts/wall_histogram";
 import FiltersModal, { Filter } from "@/components/filters_modal";
 import { Climb } from "@/const";
+import { useAuth } from "@/contexts/auth_context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function MetricsPage() {
+    const {isLoggedIn, setIsLoggedIn} = useAuth()
     const navigate = useNavigate();
-
     const [climbIds, setClimbIds] = useState<number[]>([]);
     const [filters, setFilters] = useState<Filter>({
         video: 1,
@@ -29,6 +30,12 @@ export default function MetricsPage() {
         walls: [],
         styles: [],
     });
+
+    useEffect(() => {
+        Api.is_logged_in().then((response) => {
+            setIsLoggedIn(response.data.logged_in);
+        });
+    }, []);
 
     useEffect(() => {
         Api.get_filtered_climbs(filters).then((response) => {

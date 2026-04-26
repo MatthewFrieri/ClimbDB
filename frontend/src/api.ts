@@ -13,7 +13,10 @@ export class Api {
     static async login(formData: FormData): Promise<AxiosResponse> {
         return this.api.post("/login", formData)
     }
-
+    static async is_logged_in(): Promise<AxiosResponse> {
+        return this.api.get("/is_logged_in")
+    }
+    
 	// Climbs
 	static async add_climb(formData: FormData): Promise<AxiosResponse> {
 		return this.api.post("/add_climb", formData);

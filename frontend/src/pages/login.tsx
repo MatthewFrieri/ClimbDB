@@ -1,16 +1,29 @@
 import { Api } from "@/api";
+import { useAuth } from "@/contexts/auth_context";
 import { Button } from "@heroui/button";
 import { Form } from "@heroui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const {isLoggedIn, setIsLoggedIn} = useAuth()
+
+    useEffect(() => {
+        Api.is_logged_in().then((response) => {
+            setIsLoggedIn(response.data.logged_in);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/gallery");
+        }
+    }, [isLoggedIn])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

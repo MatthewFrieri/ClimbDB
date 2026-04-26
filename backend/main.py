@@ -70,6 +70,14 @@ def login(
     )
     return {"message": "Login successful"}
 
+@app.get("/is_logged_in")
+def is_logged_in(
+    session_id: Optional[str] = Cookie(default=None),
+):
+    if session_id is None or not browser_session_manager.validate_session_id(session_id):
+        return {"logged_in": False}
+    return {"logged_in": True}
+
 @app.post("/add_climb")
 def add_climb(
     session: SessionDep,
