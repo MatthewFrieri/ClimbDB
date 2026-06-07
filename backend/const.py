@@ -8,7 +8,7 @@ THUMBNAILS_DIR = DATA_DIR / "thumbnails"
 
 DOMAIN = "frieri.ca"
 FRONTEND_URL = "https://climbdb.frieri.ca"
-SESSION_DURATION_HOURS = 1 # hours
+SESSION_DURATION_HOURS = 48 # hours
 
 
 class Grade(str, Enum):
