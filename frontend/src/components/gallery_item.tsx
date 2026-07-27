@@ -1,87 +1,41 @@
-import { BACKEND_URL, capitalize, Climb, colorMapping, formatDate } from "@/const";
-import { CircleIcon, CrossIcon, FlashIcon, StarIcon } from "./icons";
-import { Modal, ModalContent, useDisclosure } from "@heroui/modal";
-import { Chip } from "@heroui/chip";
-import DeleteButton from "./delete_button";
-import EditModal from "./edit_modal";
-import { Wall } from "@/types";
-import { useAuth } from "@/contexts/auth_context";
+import { BACKEND_URL, Climb } from "@/const";
+import { CrossIcon, FlashIcon, StarIcon } from "./icons";
+import { useNavigate } from "react-router-dom";
 
 type GalleryItemProps = {
-	climb: Climb;
-	setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+    climb: Climb;
+    setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function GalleryItem({ climb, setRefresh }: GalleryItemProps) {
-    const {isLoggedIn, setIsLoggedIn} = useAuth()
-	const { isOpen, onOpenChange } = useDisclosure();
-	const previewUrl =`${BACKEND_URL}/${climb.is_video ? climb.thumbnail_url : climb.media_url}`;
-	const mediaUrl = `${BACKEND_URL}/${climb.media_url}`;
+export default function GalleryItem({ climb }: GalleryItemProps) {
+    const navigate = useNavigate();
 
-	return (
-		<>
-			<div
-				onClick={onOpenChange}
-				className="group relative hover:opacity-80 aspect-square transform-gpu transform-opacity transition-opacity hover:cursor-pointer will-change-opacity will-change-transform"
-			>
-                <img src={previewUrl} className="rounded-none w-full h-full object-cover" loading="lazy"/>
-				<span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
-					<span className="flex flex-row gap-2">
-						<div className="bg-white px-2 py-0.5 rounded-xl outline-2 font-semibold">{climb.grade}</div>
-						{climb.flash && <FlashIcon />}
-						{!climb.complete && <CrossIcon />}
-					</span>
-					{climb.favorite && <StarIcon />}
-				</span>
-			</div>
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange} size="full">
-				<ModalContent className="relative flex justify-center items-center bg-black">
-					{climb.is_video ? (
-						<video
-							src={mediaUrl}
-							className="-z-10 w-full h-full object-contain"
-							autoPlay
-							loop
-							controls
-							preload="metadata"
-						/>
-					) : (
-						<img src={mediaUrl} className="-z-10 rounded-none w-full h-full object-contain" />
-					)}
-					<div className="top-0 left-0 z-10 absolute flex flex-col gap-5 bg-black/80 p-8 rounded-br-xl text-white">
-						<p>{formatDate(climb.date)}</p>
-						<div className="flex flex-col gap-1">
-							<p>
-								{climb.grade}, {capitalize(climb.opinion)}
-							</p>
-							<span className="flex flex-row items-center gap-2">
-								<CircleIcon className={colorMapping[climb.color]} />
-								<p>{capitalize(climb.color)}</p>
-							</span>
-						</div>
-						<p>{climb.wall == Wall.other ? "Unknown Wall" : capitalize(climb.wall)}</p>
-						<div>
-							<p>Styles</p>
-							<ul className="pl-5 list-disc">
-								{climb.styles.map((style) => (
-									<li key={style}>{capitalize(style)}</li>
-								))}
-							</ul>
-						</div>
-						<div className="flex flex-col gap-1">
-							{!climb.complete && <Chip startContent={<CrossIcon />}>Not Complete</Chip>}
-							{climb.flash && <Chip startContent={<FlashIcon size={20} />}>Flash</Chip>}
-							{climb.favorite && <Chip startContent={<StarIcon size={20} />}>Favorite</Chip>}
-						</div>
-						{isLoggedIn && (
-                            <span className="flex flex-row gap-2">
-							    <EditModal climb={climb} setRefresh={setRefresh} />
-							    <DeleteButton climb={climb} setRefresh={setRefresh} />
-						    </span>
-                        )}
-					</div>
-				</ModalContent>
-			</Modal>
-		</>
-	);
+    const previewUrl = `${BACKEND_URL}/${climb.is_video ? climb.thumbnail_url : climb.media_url}`;
+
+    return (
+        <div
+            onClick={() => navigate(`/gallery/${climb.id}`)}
+            className="group relative hover:opacity-80 aspect-square transform-gpu transform-opacity transition-opacity hover:cursor-pointer will-change-opacity will-change-transform"
+        >
+            <img
+                src={previewUrl}
+                className="rounded-none w-full h-full object-cover"
+                loading="lazy"
+            />
+
+            <span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
+                <span className="flex flex-row gap-2">
+                    <div className="bg-white px-2 py-0.5 rounded-xl outline-2 font-semibold">
+                        {climb.grade}
+                    </div>
+
+                    {climb.flash && <FlashIcon />}
+
+                    {!climb.complete && <CrossIcon />}
+                </span>
+
+                {climb.favorite && <StarIcon />}
+            </span>
+        </div>
+    );
 }
