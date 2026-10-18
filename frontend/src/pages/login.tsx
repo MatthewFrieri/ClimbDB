@@ -49,41 +49,50 @@ export default function LoginPage() {
     return (
         <div className="flex flex-col justify-center items-center gap-10 h-screen">
             <h1 className="font-bold text-8xl">ClimbDB</h1>
-            <Form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    className="p-2 border rounded w-60"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="p-2 border rounded w-60"
-                />
-                {error && (
-                    <p className="text-red-500 text-sm">{error}</p>
-                )}
-                <span className="flex gap-4 mt-4 mb-40">
+
+            <div className="flex flex-col items-center gap-4 w-60">
+                <Form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                        className="p-2 border rounded w-full"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="p-2 border rounded w-full"
+                    />
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
                     <Button
                         type="submit"
+                        color="primary"
                         disabled={isSubmitting}
-                        className="bg-blue-500 disabled:opacity-50 p-2 text-white"
+                        className="w-full"
                     >
-                        Login
+                        Log in
                     </Button>
-                    <Button
-                        onPress={() => navigate("/gallery")}
-                    >
-                        Continue as guest
-                    </Button>
+                </Form>
+
+                <span className="flex items-center gap-3 my-2 w-full">
+                    <div className="flex-1 border-gray-300 border-t" />
+                    <p className="text-gray-500 text-sm">or</p>
+                    <div className="flex-1 border-gray-300 border-t" />
                 </span>
-            </Form>
+
+                <Button
+                    variant="bordered"
+                    className="w-full"
+                    onPress={() => navigate("/gallery")}
+                >
+                    Browse gallery as guest
+                </Button>
+            </div>
         </div>
-    )
+    );
 }
