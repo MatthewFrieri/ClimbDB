@@ -1,6 +1,6 @@
 # ClimbDB
 
-Check it out [here](https://climbdb.frieri.ca) and select `Continue as guest`. ClimbDB is deployed and managed on my home server!
+Check it out [here](https://climbdb.frieri.ca). ClimbDB is deployed and managed on my home server!
 
 #
 
