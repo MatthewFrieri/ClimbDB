@@ -8,6 +8,8 @@ THUMBNAILS_DIR = DATA_DIR / "thumbnails"
 
 DOMAIN = "frieri.ca"
 FRONTEND_URL = "https://climbdb.frieri.ca"
+BACKEND_HOST = "climbdb-api.frieri.ca"
+BACKEND_URL = f"https://{BACKEND_HOST}"
 SESSION_DURATION_HOURS = 48 # hours
 
 
