@@ -1,5 +1,6 @@
 import { Api } from "@/api";
 import ReactECharts from "echarts-for-react";
+import ChartPlaceholder from "./chart_placeholder";
 import { useEffect, useState } from "react";
 
 type ChartData = {
@@ -20,7 +21,7 @@ export default function GradeLineplot({ climb_ids }: { climb_ids: number[] }) {
 			setData(response.data);
 		});
 	}, [climb_ids]);
-	if (!data) return null;
+	if (!data) return <ChartPlaceholder />;
 
 	const ONE_MONTH = 30 * 24 * 60 * 60 * 1000;
 	const options = {

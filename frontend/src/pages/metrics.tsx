@@ -5,10 +5,10 @@ import DateHeatmap from "@/components/charts/date_heatmap";
 import GradeHistogram from "@/components/charts/grade_histogram";
 import GradeLineplot from "@/components/charts/grade_lineplot";
 import OpinionHistogram from "@/components/charts/opinion_histogram";
-import StyleHistogram from "@/components/charts/style_histogram";
+// import StyleHistogram from "@/components/charts/style_histogram";
 import StyleRadar from "@/components/charts/style_radar";
 import WallHeatmap from "@/components/charts/wall_heatmap";
-import WallHistogram from "@/components/charts/wall_histogram";
+// import WallHistogram from "@/components/charts/wall_histogram";
 import FiltersModal from "@/components/filters_modal";
 import { Climb } from "@/const";
 import { useAuth } from "@/contexts/auth_context";
@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function MetricsPage() {
-    const {isLoggedIn, setIsLoggedIn} = useAuth()
+    const { setIsLoggedIn } = useAuth()
     const navigate = useNavigate();
     const [climbIds, setClimbIds] = useState<number[] | null>(null); // null until first load
     const { filters } = useFilters();

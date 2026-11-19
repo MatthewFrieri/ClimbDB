@@ -19,10 +19,11 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
             setData(response.data);
         });
     }, [climb_ids]);
-    if (!data) return;
+    // Until data arrives, render the empty map invisibly so it already takes up its space
+    const chart = data ?? { start_date: "", end_date: "", x_labels: [], y_values: [] };
 
-    const minValue = Math.min(...data.y_values);
-    const maxValue = Math.max(...data.y_values);
+    const minValue = Math.min(...chart.y_values);
+    const maxValue = Math.max(...chart.y_values);
 
     const labelToPositions: Record<Wall, [string, string]> = {
         [Wall.ash]: ["top-8 left-7", "top-0 left-7"],
@@ -48,14 +49,14 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-2 w-full overflow-clip animate-fade-in">
+        <div className={`flex flex-col items-center gap-2 w-full overflow-clip ${data ? "animate-fade-in" : "invisible"}`}>
             <p className="font-bold text-neutral-800 text-lg md:text-xl">
                 Walls
             </p>
             <div className="max-w-[500px]">
                 <div className="relative w-[500px] scale-[0.7] sm:scale-[0.85] md:scale-100 origin-top">
                     <WallMap className="fill-slate-300 stroke-neutral-800 border-3 border-neutral-800 w-full h-auto" />
-                    {data.x_labels.map((label, index) => {
+                    {chart.x_labels.map((label, index) => {
                         if (label == Wall.other) return null;
                         return (
                             <div key={index}>
@@ -71,11 +72,11 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
                                     )}
                                 </p>
 
-                                {data.y_values[index] > 0 && (
+                                {chart.y_values[index] > 0 && (
                                     <div
                                         style={{
                                             background: `radial-gradient(circle, ${valueToRed(
-                                                data.y_values[index],
+                                                chart.y_values[index],
                                                 minValue,
                                                 maxValue,
                                             )} 20%, #fee2e2 70%)`,

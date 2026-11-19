@@ -1,5 +1,6 @@
 import { Api } from "@/api";
 import ReactECharts from "echarts-for-react";
+import ChartPlaceholder from "./chart_placeholder";
 import { useEffect, useState } from "react";
 
 type ChartData = {
@@ -15,7 +16,7 @@ export default function StyleRadar({ climb_ids }: { climb_ids: number[] }) {
 			setData(response.data);
 		});
 	}, [climb_ids]);
-	if (!data) return;
+	if (!data) return <ChartPlaceholder />;
 
 	const options = {
 		title: {
