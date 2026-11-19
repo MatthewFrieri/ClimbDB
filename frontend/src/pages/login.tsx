@@ -14,7 +14,7 @@ export default function LoginPage() {
     const {isLoggedIn, setIsLoggedIn} = useAuth()
 
     useEffect(() => {
-        Api.is_logged_in().then((response) => {
+        Api.get_login_status().then((response) => {
             setIsLoggedIn(response.data.logged_in);
         });
     }, []);

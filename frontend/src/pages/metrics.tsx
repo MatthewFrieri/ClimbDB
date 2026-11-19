@@ -32,13 +32,13 @@ export default function MetricsPage() {
     });
 
     useEffect(() => {
-        Api.is_logged_in().then((response) => {
+        Api.get_login_status().then((response) => {
             setIsLoggedIn(response.data.logged_in);
         });
     }, []);
 
     useEffect(() => {
-        Api.get_filtered_climbs(filters).then((response) => {
+        Api.filter_climbs(filters).then((response) => {
             setClimbIds(response.data.map((climb: Climb) => climb.id));
         });
     }, [filters]);

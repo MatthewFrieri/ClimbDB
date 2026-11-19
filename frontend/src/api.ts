@@ -13,25 +13,25 @@ export class Api {
     static async login(formData: FormData): Promise<AxiosResponse> {
         return this.api.post("/login", formData)
     }
-    static async is_logged_in(): Promise<AxiosResponse> {
-        return this.api.get("/is_logged_in")
+    static async get_login_status(): Promise<AxiosResponse> {
+        return this.api.get("/login/status")
     }
     
 	// Climbs
 	static async add_climb(formData: FormData): Promise<AxiosResponse> {
-		return this.api.post("/add_climb", formData);
+		return this.api.post("/climbs/add", formData);
 	}
-	static async get_filtered_climbs(filters: Filter): Promise<AxiosResponse> {
-		return this.api.post("/filtered_climbs", filters);
+	static async filter_climbs(filters: Filter): Promise<AxiosResponse> {
+		return this.api.post("/climbs/filter", filters);
 	}
 	static async get_climb(id: number): Promise<AxiosResponse> {
-		return this.api.get(`/climb/${id}`);
+		return this.api.get(`/climbs/${id}`);
 	}
 	static async edit_climb(id: number, revision: Revision): Promise<AxiosResponse> {
-		return this.api.patch(`/edit_climb/${id}`, revision);
+		return this.api.patch(`/climbs/${id}`, revision);
 	}
 	static async delete_climb(id: number): Promise<AxiosResponse> {
-		return this.api.delete(`/delete_climb/${id}`);
+		return this.api.delete(`/climbs/${id}`);
 	}
 
 	// Charts
