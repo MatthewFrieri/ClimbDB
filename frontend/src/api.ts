@@ -24,6 +24,9 @@ export class Api {
 	static async get_filtered_climbs(filters: Filter): Promise<AxiosResponse> {
 		return this.api.post("/filtered_climbs", filters);
 	}
+	static async get_climb(id: number): Promise<AxiosResponse> {
+		return this.api.get(`/climb/${id}`);
+	}
 	static async edit_climb(id: number, revision: Revision): Promise<AxiosResponse> {
 		return this.api.patch(`/edit_climb/${id}`, revision);
 	}

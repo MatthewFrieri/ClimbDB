@@ -145,6 +145,14 @@ def add_climb(
     session.refresh(climb)
     return climb
 
+@app.get("/climb/{climb_id}")
+def get_climb(session: SessionDep, climb_id: int):
+    climb = session.get(Climb, climb_id)
+
+    if not climb:
+        raise HTTPException(status_code=404, detail="Climb not found")
+
+    return climb
 
 @app.get("/all_climbs")
 def all_climbs(session: SessionDep):
