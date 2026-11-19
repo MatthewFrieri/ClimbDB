@@ -9,9 +9,10 @@ import StyleHistogram from "@/components/charts/style_histogram";
 import StyleRadar from "@/components/charts/style_radar";
 import WallHeatmap from "@/components/charts/wall_heatmap";
 import WallHistogram from "@/components/charts/wall_histogram";
-import FiltersModal, { Filter } from "@/components/filters_modal";
+import FiltersModal from "@/components/filters_modal";
 import { Climb } from "@/const";
 import { useAuth } from "@/contexts/auth_context";
+import { useFilters } from "@/contexts/filters_context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,17 +20,7 @@ export default function MetricsPage() {
     const {isLoggedIn, setIsLoggedIn} = useAuth()
     const navigate = useNavigate();
     const [climbIds, setClimbIds] = useState<number[]>([]);
-    const [filters, setFilters] = useState<Filter>({
-        video: 1,
-        complete: undefined,
-        flash: undefined,
-        favorite: undefined,
-        grades: [],
-        opinions: [],
-        colors: [],
-        walls: [],
-        styles: [],
-    });
+    const { filters } = useFilters();
 
     useEffect(() => {
         Api.get_login_status().then((response) => {
@@ -60,7 +51,7 @@ export default function MetricsPage() {
                         {climbIds.length}{" "}
                         {climbIds.length == 1 ? "Result" : "Results"}
                     </p>
-                    <FiltersModal setFilters={setFilters} />
+                    <FiltersModal />
                 </div>
             </header>
 

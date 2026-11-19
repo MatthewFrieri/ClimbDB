@@ -1,38 +1,30 @@
 import { Grade, Color, Style, Opinion, Wall } from "@/types";
 import { Select, SelectItem } from "@heroui/select";
-import { useEffect, useState } from "react";
 import { Button } from "@heroui/button";
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@heroui/modal";
 import { capitalize, colorMapping } from "@/const";
 import { CircleIcon } from "./icons";
+import { Filter, BoolFilter, useFilters } from "@/contexts/filters_context";
 
-type BoolFilter = 1 | 0 | undefined;
-export type Filter = {
-	video: BoolFilter;
-	complete: BoolFilter;
-	flash: BoolFilter;
-	favorite: BoolFilter;
-	grades: Grade[];
-	opinions: Opinion[];
-	colors: Color[];
-	walls: Wall[];
-	styles: Style[];
-};
-type FiltersModalProps = {
-	setFilters: (filters: Filter) => void;
-};
-
-export default function FiltersModal({ setFilters }: FiltersModalProps) {
+export default function FiltersModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [video, setVideo] = useState<BoolFilter>(1);
-	const [complete, setComplete] = useState<BoolFilter>();
-	const [flash, setFlash] = useState<BoolFilter>();
-	const [favorite, setFavorite] = useState<BoolFilter>();
-	const [grades, setGrades] = useState<Grade[]>([]);
-	const [opinions, setOpinions] = useState<Opinion[]>([]);
-	const [colors, setColors] = useState<Color[]>([]);
-	const [walls, setWalls] = useState<Wall[]>([]);
-	const [styles, setStyles] = useState<Style[]>([]);
+	const { filters, setFilters } = useFilters();
+	const { video, complete, flash, favorite, grades, opinions, colors, walls, styles } = filters;
+
+	// Returns a setter that updates one field of the shared filter
+	const setField =
+		<K extends keyof Filter>(key: K) =>
+		(value: Filter[K]) =>
+			setFilters((prev) => ({ ...prev, [key]: value }));
+	const setVideo = setField("video");
+	const setComplete = setField("complete");
+	const setFlash = setField("flash");
+	const setFavorite = setField("favorite");
+	const setGrades = setField("grades");
+	const setOpinions = setField("opinions");
+	const setColors = setField("colors");
+	const setWalls = setField("walls");
+	const setStyles = setField("styles");
 
 	const boolObjects = [
 		{ var: video, setVar: setVideo, label: "Media", trueOption: "Video", falseOption: "Photo" },
@@ -56,20 +48,6 @@ export default function FiltersModal({ setFilters }: FiltersModalProps) {
 			obj.setVar([]);
 		});
 	};
-
-	useEffect(() => {
-		setFilters({
-			video: video,
-			complete: complete,
-			flash: flash,
-			favorite: favorite,
-			grades: grades,
-			opinions: opinions,
-			colors: colors,
-			walls: walls,
-			styles: styles,
-		});
-	}, [...boolObjects.map((obj) => obj.var), ...listObjects.map((obj) => obj.var)]);
 
 	return (
 		<>

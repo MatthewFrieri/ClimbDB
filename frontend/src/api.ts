@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Filter } from "./components/filters_modal";
+import { Filter } from "./contexts/filters_context";
 import { BACKEND_URL } from "./const";
 import { Revision } from "./components/edit_modal";
 

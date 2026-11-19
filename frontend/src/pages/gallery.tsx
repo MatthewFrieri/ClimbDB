@@ -4,13 +4,14 @@ import { Api } from "@/api";
 import GalleryItem from "@/components/gallery_item";
 import { Select, SelectItem } from "@heroui/select";
 import { Grade } from "@/types";
-import FiltersModal, { Filter } from "@/components/filters_modal";
+import FiltersModal from "@/components/filters_modal";
 import { Button } from "@heroui/button";
 import { CircleIcon, PlusIcon } from "@/components/icons";
 import AddItemModal from "@/components/add_item_modal";
 import { useDisclosure } from "@heroui/modal";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth_context";
+import { useFilters } from "@/contexts/filters_context";
 
 type SortField =
     | "date_new_to_old"
@@ -25,17 +26,7 @@ export default function GalleryPage() {
     const [climbs, setClimbs] = useState<Climb[]>([]);
     const [sortField, setSortField] = useState<SortField>("date_new_to_old");
     const [refresh, setRefresh] = useState<boolean>(true);
-    const [filters, setFilters] = useState<Filter>({
-        video: 1,
-        complete: undefined,
-        flash: undefined,
-        favorite: undefined,
-        grades: [],
-        opinions: [],
-        colors: [],
-        walls: [],
-        styles: [],
-    });
+    const { filters } = useFilters();
 
     useEffect(() => {
         Api.get_login_status().then((response) => {
@@ -109,7 +100,7 @@ export default function GalleryPage() {
                         {climbs.length}{" "}
                         {climbs.length == 1 ? "Result" : "Results"}
                     </p>
-                    <FiltersModal setFilters={setFilters} />
+                    <FiltersModal />
                     <Select
                         label="Sort By"
                         className="w-32 md:w-36"
