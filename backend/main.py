@@ -360,7 +360,7 @@ def style_histogram_data(session: SessionDep, climb_ids: list[int]):
 
 
 @app.post("/charts/style_radar_data")
-def style_histogram_data(session: SessionDep, climb_ids: list[int]):
+def style_radar_data(session: SessionDep, climb_ids: list[int]):
 
     styles = session.exec(select(Climb.styles).where(Climb.id.in_(climb_ids))).all()
     styles = [i for s in styles for i in s]
