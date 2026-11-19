@@ -127,10 +127,8 @@ export default function GalleryPage() {
                     </Select>
                 </div>
             </header>
-            {climbs !== null && (
-            <div className="animate-fade-in">
-            {sortedClimbs.length == 0 ? (
-                <div className="flex justify-center items-center h-[80vh]">
+            {climbs !== null && (sortedClimbs.length == 0 ? (
+                <div className="flex justify-center items-center h-[80vh] animate-fade-in">
                     <h1 className="text-gray-500 text-4xl">
                         Nothing matches filters :(
                     </h1>
@@ -145,9 +143,7 @@ export default function GalleryPage() {
                         />
                     ))}
                 </div>
-            )}
-            </div>
-            )}
+            ))}
             {isLoggedIn && (
                 <>
                     <Button

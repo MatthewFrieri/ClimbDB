@@ -1,7 +1,6 @@
 import { BACKEND_URL, Climb } from "@/const";
 import { CrossIcon, FlashIcon, StarIcon } from "./icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 type GalleryItemProps = {
     climb: Climb;
@@ -10,7 +9,6 @@ type GalleryItemProps = {
 
 export default function GalleryItem({ climb }: GalleryItemProps) {
     const navigate = useNavigate();
-    const [imageLoaded, setImageLoaded] = useState(false);
 
     const previewUrl = `${BACKEND_URL}/${climb.is_video ? climb.thumbnail_url : climb.media_url}`;
 
@@ -21,10 +19,8 @@ export default function GalleryItem({ climb }: GalleryItemProps) {
         >
             <img
                 src={previewUrl}
-                className={`rounded-none w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                className="rounded-none w-full h-full object-cover"
                 loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(true)}
             />
 
             <span className="top-2 z-10 absolute flex flex-row justify-between gap-1 px-2 w-full">
