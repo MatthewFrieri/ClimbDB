@@ -19,7 +19,7 @@ export default function BoolNumber({
 
     return (
         <div className="font-bold text-neutral-800 text-center">
-            <p className="mb-1 text-5xl md:text-6xl">{data}</p>
+            <p className={`mb-1 text-5xl md:text-6xl ${data === null ? "invisible" : "animate-fade-in"}`}>{data ?? 0}</p>
             <p className="text-lg">
                 {capitalize(field)}
                 {field == "flash" && "e"}d

@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 export default function MetricsPage() {
     const {isLoggedIn, setIsLoggedIn} = useAuth()
     const navigate = useNavigate();
-    const [climbIds, setClimbIds] = useState<number[]>([]);
+    const [climbIds, setClimbIds] = useState<number[] | null>(null); // null until first load
     const { filters } = useFilters();
 
     useEffect(() => {
@@ -47,15 +47,16 @@ export default function MetricsPage() {
                     <h1 className="font-bold text-4xl md:text-5xl">Metrics</h1>
                 </div>
                 <div className="flex justify-between md:justify-end items-center gap-3 w-full md:w-auto">
-                    <p className="font-semibold">
-                        {climbIds.length}{" "}
-                        {climbIds.length == 1 ? "Result" : "Results"}
+                    <p className={`font-semibold ${climbIds ? "animate-fade-in" : "invisible"}`}>
+                        {climbIds?.length ?? 0}{" "}
+                        {climbIds?.length == 1 ? "Result" : "Results"}
                     </p>
                     <FiltersModal />
                 </div>
             </header>
 
-            <div className="flex flex-col gap-6 px-4 md:px-20">
+            {climbIds !== null && (
+            <div className="flex flex-col gap-6 px-4 md:px-20 animate-fade-in">
                 {/* Top charts */}
                 <div className="flex md:flex-row flex-col gap-6">
                     <div className="md:flex-[2] w-full">
@@ -100,6 +101,7 @@ export default function MetricsPage() {
                     </div>
                 </div>
             </div>
+            )}
         </>
     );
 }

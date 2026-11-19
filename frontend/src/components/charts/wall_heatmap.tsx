@@ -48,7 +48,7 @@ export default function WallHeatmap({ climb_ids }: { climb_ids: number[] }) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-2 w-full overflow-clip">
+        <div className="flex flex-col items-center gap-2 w-full overflow-clip animate-fade-in">
             <p className="font-bold text-neutral-800 text-lg md:text-xl">
                 Walls
             </p>

@@ -23,8 +23,8 @@ export default function GalleryPage() {
     const {isLoggedIn, setIsLoggedIn} = useAuth()
     const navigate = useNavigate();
     const { isOpen, onOpenChange } = useDisclosure();
-    const [climbs, setClimbs] = useState<Climb[]>([]);
-    const [sortField, setSortField] = useState<SortField>("date_new_to_old");
+    const [climbs, setClimbs] = useState<Climb[] | null>(null); // null until first load
+    const [sortField, setSortField] = useState<SortField>("grade_high_to_low");
     const [refresh, setRefresh] = useState<boolean>(true);
     const { filters } = useFilters();
 
@@ -78,7 +78,7 @@ export default function GalleryPage() {
         if (aValue > bValue) return 1 * reverse;
         return 0;
     };
-    const sortedClimbs = [...climbs].sort(sortClimbs);
+    const sortedClimbs = [...(climbs ?? [])].sort(sortClimbs);
 
     return (
         <>
@@ -96,9 +96,9 @@ export default function GalleryPage() {
                     {isLoggedIn && (
                         <CircleIcon size={10} className="drop-shadow-[0_0_3px_rgba(64,197,124,0.8)] fill-green-500" />
                     )}
-                    <p className="font-semibold">
-                        {climbs.length}{" "}
-                        {climbs.length == 1 ? "Result" : "Results"}
+                    <p className={`font-semibold ${climbs ? "animate-fade-in" : "invisible"}`}>
+                        {climbs?.length ?? 0}{" "}
+                        {climbs?.length == 1 ? "Result" : "Results"}
                     </p>
                     <FiltersModal />
                     <Select
@@ -127,6 +127,8 @@ export default function GalleryPage() {
                     </Select>
                 </div>
             </header>
+            {climbs !== null && (
+            <div className="animate-fade-in">
             {sortedClimbs.length == 0 ? (
                 <div className="flex justify-center items-center h-[80vh]">
                     <h1 className="text-gray-500 text-4xl">
@@ -143,6 +145,8 @@ export default function GalleryPage() {
                         />
                     ))}
                 </div>
+            )}
+            </div>
             )}
             {isLoggedIn && (
                 <>

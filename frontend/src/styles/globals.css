@@ -3,3 +3,16 @@
 
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
+
+/* Fade content in once its data has loaded (use with the animate-fade-in class) */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@utility animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+/* Each chart mounts when its own data arrives, so fade every ECharts chart in */
+.echarts-for-react {
+  animation: fade-in 0.4s ease-out;
+}
